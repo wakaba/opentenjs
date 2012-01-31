@@ -6,9 +6,14 @@ Ten.js - Light Weight JavaScript Framework
 
 Please see test html files under tests directory for detailed information.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Junya Kondo, E<lt>http://d.hatena.ne.jp/jkondo/E<gt>
+
+id:chris4403
+
+In addition, following people contributed the project: id:secondlife,
+id:nagayama, id:motemen, id:cho45, id:nanto_vi, and id:wakabatan.
 
 =head1 COPYRIGHT AND LICENSE
 
