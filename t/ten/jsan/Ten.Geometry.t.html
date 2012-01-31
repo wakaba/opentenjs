@@ -1,0 +1,36 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<style type="text/css">
+</style>
+<body>
+<pre id="test"><script>
+new Ten.Observer(window, 'onload', function() {
+    JSAN.use('Test.Simple');
+    plan({tests: 6});
+
+    var elem = document.getElementById('test');
+    var pos = Ten.Geometry.getElementPosition(elem);
+    ok (pos, 'getElementPosition');
+    ok (pos.x, 'has x');
+    ok ((pos.y + '').match(/[0-9]+/), 'is digits');
+
+    var size = Ten.Geometry.getWindowSize(window);
+    ok (size, 'getWindowSize');
+    ok (size.w, 'has w');
+    ok ((size.w + '').match(/[0-9]+/), 'is digits');
+});
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+<p>Ten.Geometry</p>
+
+</div>
+</body>
+</html>

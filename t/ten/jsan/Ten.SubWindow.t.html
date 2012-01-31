@@ -1,0 +1,245 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="../lib/Ten/SubWindow.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test"><script type="text/javascript">
+function $(eid) { return document.getElementById(eid) }
+
+var MyWindow = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        width: '300px',
+        height: '300px',
+        borderRadius: '6px',
+        MozBorderRadius: '6px',
+        backgroundColor: '#333',
+        opacity: 0.6,
+        color: '#fff'
+    }
+});
+
+var MyWindow2 = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        borderRadius: '8px',
+        MozBorderRadius: '8px',
+        width: '300px',
+        height: '300px'
+    }
+});
+
+var SolidWindow = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        width: '200px',
+        height: '400px',
+        backgroundColor: 'blue',
+        color: 'white',
+        opacity: 0.5
+    },
+    draggable: false
+});
+
+var MyButton = new Ten.Class({
+    initialize: function(eid,win) {
+        this.button = $(eid);
+        this.window = new win;
+        this.window.container.innerHTML = 'Hello, its my window!';
+        new Ten.Observer(this.button, 'onclick', this, 'showWindow');
+    }
+},{
+    showWindow: function(e) {
+        var pos = e.mousePosition();
+        this.window.show(pos);
+    }
+});
+
+var NameScreen = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        padding: '2px',
+        textAlign: 'center'
+    },
+    containerStyle: {
+        margin: 0,
+        padding: 0
+    },
+    closeButton: null,
+    showScreen: false,
+    draggable: false
+},{
+    showName: function(name, pos) {
+        this.container.innerHTML = name;
+        this.show(pos);
+    }
+});
+
+var Star = new Ten.Class({
+    initialize: function(eid,name) {
+        this.img = $(eid);
+        this.name = name;
+        this.window = new NameScreen;
+        this.window.container.innerHTML = this.name;
+	new Ten.Observer(this.img,'onmouseover',this,'showName');
+	new Ten.Observer(this.img,'onmouseout',this,'hideName');
+    }
+},{
+    showName: function(e) {
+        var pos = e.mousePosition();
+        pos.x += 10;
+        pos.y += 25;
+        this.window.showName(this.name, pos);
+    },
+    hideName: function(e) {
+        this.window.hide();
+    }
+});
+
+var CommentForm = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        width: '300px',
+        height: '100px'
+    }
+},{
+    showForm: function(e) {
+        var input = document.createElement('input');
+        input.type = 'text';
+        this.container.innerHTML = '';
+        this.container.appendChild(input);
+        this.show(e.mousePosition());
+    }
+});
+
+var CommentButton = new Ten.Class({
+    initialize: function() {
+        this.button = $('comment');
+        this.window = new CommentForm;
+        new Ten.Observer(this.button, 'onclick', this.window, 'showForm');
+    }
+});
+
+new Ten.Observer(window, 'onload', function() {
+    // new JSAN('lib').use('Test.More');
+    // plan({tests: 8});
+
+    var sw = new Ten.SubWindow;
+    // ok (sw, 'SubWindow');
+    sw.container.innerHTML = 'Hello world';
+    new Ten.Observer($('sw1'), 'onclick', sw, 'show');
+
+    var mb = new MyButton('sw2', MyWindow);
+    // ok (mb, 'my button');
+    var mb2 = new MyButton('sw3', MyWindow);
+    // ok (mb2, 'my button2');
+    var mb3 = new MyButton('sw4', SolidWindow);
+    // ok (mb3, 'solid window');
+    var mb4 = new MyButton('sw5', MyWindow2);
+
+    var s1 = new Star('s1', 'jkondo');
+    var s2 = new Star('s2', 'reikon');
+    var s3 = new Star('s3', 'cinnamon');
+
+    // ok (s1.window, 'star1');
+    // ok (s2.window, 'star2');
+    // ok (s3.window, 'star3');
+
+    var cm = new CommentButton;
+    // ok (cm, 'comment');
+});
+</script></pre>
+
+<button id="sw1">Sub Window</button>
+<button id="sw2">My Window</button>
+<button id="sw3">My Window2</button>
+<button id="sw4">My Window2</button>
+<button id="sw5">My Window2</button>
+
+<br />
+<img src="http://s.hatena.com/images/star.gif" id="s1" />
+<img src="http://s.hatena.com/images/star.gif" id="s2" />
+<img src="http://s.hatena.com/images/star.gif" id="s3" />
+<img src="http://s.hatena.com/images/comment.gif" id="comment" />
+
+<div class="pod">
+<h1>NAME</h1>
+
+Ten.SubWindow - Base Class for showing sub window
+
+<h1>SYNOPSYS</h1>
+<pre>
+var MyWindow = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        width: '300px',
+        height: '300px'
+    }
+});
+
+var SolidWindow = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        width: '200px',
+        height: '400px',
+        backgroundColor: 'blue',
+        color: 'white',
+        opacity: 0.5
+    },
+    draggable: false
+});
+
+var MyButton = new Ten.Class({
+    initialize: function(eid,win) {
+        this.button = $(eid);
+        this.window = new win;
+        this.window.container.innerHTML = 'Hello, its my window!';
+        new Ten.Observer(this.button, 'onclick', this, 'showWindow');
+    }
+},{
+    showWindow: function(e) {
+        this.window.show(e.mousePosition());
+    }
+});
+
+var mb = new MyButton('sw2', MyWindow);
+var mb2 = new MyButton('sw3', MyWindow);
+var mb3 = new MyButton('sw4', SolidWindow);
+
+var NameScreen = new Ten.Class({
+    base: [Ten.SubWindow],
+    style: {
+        padding: '2px',
+        textAlign: 'center'
+    },
+    containerStyle: {
+        margin: 0,
+        padding: 0
+    },
+    closeButton: null,
+    showScreen: false,
+    draggable: false
+},{
+    showName: function(name, pos) {
+        this.container.innerHTML = name;
+        this.show(pos);
+    }
+});
+</pre>
+
+<h1>METHODS</h1>
+
+<dl>
+  <dt>showScreen: <i>Bool</i></dt>
+  <dd>
+    You must set <code>showScreen</code> to <code>false</code> when you use screen with <code>onmouseover</code> event.
+    If you don't, <code>onmouseout</code> event will be called when the screen will be shown.
+  </dd>
+</dl>
+
+</div>
+</body>
+</html>

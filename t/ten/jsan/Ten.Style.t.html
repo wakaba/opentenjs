@@ -1,0 +1,86 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+.style-test {
+  margin: 5px;
+}
+div.style-test {
+  margin: 5px 3px;
+  padding: 1em;
+}
+div.error {
+  background-color: #ffaaaa;
+}
+.hatena-star-add-button-image {
+  background-image: url(http://s.hatena.com/images/add.gif);
+}
+.hatena-star-comment-button-image {
+  background-image: url("/images/comment.gif");
+}
+</style>
+<body>
+<div class="error">
+<p>Error message</p>
+</div>
+
+<pre id="test"><script>
+JSAN.use('Test.Simple');
+plan({tests: 10});
+var v = Ten.Style.getGlobalStyle('.style-test', 'margin');
+ok (v == '5px 5px 5px 5px');
+v = Ten.Style.getGlobalStyle('div.style-test', 'margin');
+ok (v == '5px 3px 5px 3px');
+v = Ten.Style.getGlobalStyle('div.style-test', 'padding');
+ok (v == '1em 1em 1em 1em');
+
+v = Ten.Style.getGlobalStyle('.hatena-star-add-button-image', 'backgroundImage');
+ok (v == 'url(http://s.hatena.com/images/add.gif)');
+var url = Ten.Style.scrapeURL(v);
+ok (url == 'http://s.hatena.com/images/add.gif');
+
+v = Ten.Style.getGlobalStyle('.hatena-star-comment-button-image', 'backgroundImage');
+ok (v == 'url(/images/comment.gif)');
+url = Ten.Style.scrapeURL(v);
+ok (url == '/images/comment.gif');
+
+v = Ten.Style.getGlobalStyle('.undefined', 'backgroundImage');
+ok (v == null);
+
+var style;
+var elem = Ten.DOM.getElementsByTagAndClassName('div','error')[0];
+style = Ten.Style.getElementStyle(elem,'backgroundColor');
+ok (style, 'div bgcolor');
+
+elem = elem.getElementsByTagName('p')[0];
+style = Ten.Style.getElementStyle(elem,'backgroundColor');
+ok (style == 'transparent', 'p bgcolor');
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Style - Style utility
+
+<h1>Methods</h1>
+
+<dl>
+  <dt>getGlobalStyle</dt>
+  <dd>
+	<p>You can get style from document.styleSheets.</p>
+	<pre>
+var margin = Ten.Style.getGlobalStyle('.style-test', 'margin');
+is (margin, '5px 5px 5px 5px');
+</pre>
+	</dd>
+</dl>
+
+</div>
+</body>
+</html>

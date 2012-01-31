@@ -1,0 +1,222 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<style type="text/css">
+.style-test {
+  margin: 5px;
+}
+div.style-test {
+  margin: 5px 3px;
+  padding: 1em;
+}
+</style>
+<body>
+<pre id="test"><script>
+new Ten.Observer(window, 'onload', function() {
+    JSAN.use('Test.Simple');
+    plan({tests: 73});
+    var elems;
+    var sel;
+    sel = 'div';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('div')[0], sel);
+    ok (elems[1], sel);
+    ok (elems[1] == document.getElementsByTagName('div')[1], sel);
+    ok (elems[2] === undefined, sel);
+
+    sel = 'div.pod';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('div')[1], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = '.pod';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('div')[1], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'div.pod h1';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[0], sel);
+    ok (elems[1], sel);
+    ok (elems[1] == document.getElementsByTagName('h1')[1], sel);
+    ok (elems[2], sel);
+    ok (elems[2] == document.getElementsByTagName('h1')[2], sel);
+    ok (elems[3] === undefined, sel);
+
+    sel = 'div.pod h1, pre';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[0], sel);
+    ok (elems[1], sel);
+    ok (elems[1] == document.getElementsByTagName('h1')[1], sel);
+    ok (elems[2], sel);
+    ok (elems[2] == document.getElementsByTagName('h1')[2], sel);
+    ok (elems[3], sel);
+    ok (elems[3] == document.getElementsByTagName('pre')[0], sel);
+    ok (elems[4], sel);
+    ok (elems[4] == document.getElementsByTagName('pre')[1], sel);
+    ok (elems[5] === undefined, sel);
+
+    sel = '#test';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementById('test'), sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'pre#test';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementById('test'), sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'div#test';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0] === undefined, sel);
+
+    sel = 'script';
+    elems = Ten.Selector.getElementsBySelector(sel,document.getElementById('test'));
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('script')[2], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'div.pod pre';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('pre')[1], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'div.dummy';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('div')[0], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = '.test';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('div')[0], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:first-child';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[0], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:nth-child(1)';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[0], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:nth-child(2)';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[1], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:nth-child(3)';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[2], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:nth-child(4)';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0] === undefined, sel);
+
+    sel = 'h1:nth-child(4) a';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0] === undefined, sel);
+
+    sel = 'h1:last-child';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[2], sel);
+    ok (elems[1] === undefined, sel);
+
+    sel = 'h1:nth-child(2n+1)';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('h1')[0], sel);
+    ok (elems[1], sel);
+    ok (elems[1] == document.getElementsByTagName('h1')[2], sel);
+    ok (elems[2] === undefined, sel);
+
+    sel = 'body > pre';
+    elems = Ten.Selector.getElementsBySelector(sel);
+    ok (elems[0], sel);
+    ok (elems[0] == document.getElementsByTagName('pre')[0], sel);
+    ok (elems[1] === undefined, sel);
+});
+</script></pre>
+
+<div class="dummy test">
+<p>I have 2 class names.</p>
+<ol>
+<li>dummy</li>
+<li>test</li>
+</ol>
+</div>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+<p>Ten.Selector - Selecting elements by CSS selector</p>
+
+<h1>DESCRIPTION</h1>
+
+<p>Ten.Selector provides the way to select elements by CSS
+selectors. Ten.Selector supports CSS1 selectors and some pseudo-classes.</p>
+
+<dl>
+  <dt>E</dt>
+  <dd>Select by tag name E</dd>
+  <dt>E.classname</dt>
+  <dd>Select by tag name E whose class is "classname"</dd>
+  <dt>E#idname</dt>
+  <dd>Select by tag name E whose id is "idname"</dd>
+  <dt>E F</dt>
+  <dd>Select by tag name F descendent of E elements</dd>
+  <dt>E, F</dt>
+  <dd>Select by tag name E and F</dd>
+  <dt>E > F</dt>
+  <dd>Select by tag name F child of E elements</dd>
+</dl>
+
+<h2>Pseudo-classes</h2>
+
+<dl>
+  <dt>E:fist-child</dt>
+  <dt>E:last-child</dt>
+  <dt>E:nth-child(<i>n</i>)</dt>
+  <dt>E:nth-child(<i>a</i>n+<i>b</i>)</dt>
+</dl>
+
+<h1>SYNOPSIS</h1>
+
+<pre>
+  var elems;
+  elems = Ten.Selector.getElementsBySelector('div');
+  elems = Ten.Selector.getElementsBySelector('div.pod');
+  elems = Ten.Selector.getElementsBySelector('div.pod h1');
+  elems = Ten.Selector.getElementsBySelector('div.pod h1, pre');
+  elems = Ten.Selector.getElementsBySelector('#test');
+  elems = Ten.Selector.getElementsBySelector('script',document.getElementById('test'));
+  elems = Ten.Selector.getElementsBySelector('div.pod pre');
+  elems = Ten.Selector.getElementsBySelector('h1:first-child');
+  elems = Ten.Selector.getElementsBySelector('h1:last-child');
+  elems = Ten.Selector.getElementsBySelector('h1:nth-child(2)');
+</pre>
+
+</div>
+</body>
+</html>

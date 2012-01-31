@@ -1,0 +1,37 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+<style>
+table pre {
+  height: 100%;
+  font-size: 110%;
+}
+</style>
+</head>
+<body>
+<pre id="test">
+<script>
+new JSAN('lib').use('Test.More');
+plan({tests: 1});
+new Ten.Observer(window, 'onload', function() {
+    ok('onload');
+});
+</script>
+</pre>
+
+<div class="pod">
+<h1>NAME</h1>
+
+Ten.Observer
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+</pre>
+
+
+</div>
+</body>
+</html>

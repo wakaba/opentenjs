@@ -1,0 +1,29 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="../lib/Ten/Deferred.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test"><script>
+JSAN.use('Test.More');
+plan({tests: 3});
+
+ok(Ten.Deferred);
+is(typeof Ten.Deferred, "function");
+is(typeof Ten.Deferred.next, "function");
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Deferred - JSDeferred in Ten
+
+<a href="http://github.com/cho45/jsdeferred/tree/master">See JSDeferred</a>
+
+</div>
+</body>
+</html>
+

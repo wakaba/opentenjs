@@ -1,0 +1,115 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test"><script>
+JSAN.use('Test.More');
+plan({tests: 19});
+
+var c1 = new Ten.Cookie('foo=bar; hoge=1&2&3');
+
+ok (c1.has('foo'),          'has() for existing key');
+ok (!c1.has('no-such-key'), 'has() for not existing key');
+ok (c1.get('foo') == 'bar', 'get() should restore value correctly');
+
+var arr = c1.get('hoge');
+
+ok (arr instanceof Array,   'restore serialized array');
+ok (arr.length == 3,        'restore serialized array');
+ok (arr[0] == 1,            'restore serialized array');
+ok (arr[1] == 2,            'restore serialized array');
+ok (arr[2] == 3,            'restore serialized array');
+
+var c2 = new Ten.Cookie();
+for (var k in c2.cookies)
+    c2.clear(k);
+
+is (document.cookie, '',  'document.cookie must be cleared');
+
+c2.set('apple', 'juice');
+
+ok (document.cookie == 'apple=juice', 'document.cookie must be set correctly');
+
+var NONALPHA_CHARACTERS = '!@#$%^&*()_<>&';
+var ARRAY = [NONALPHA_CHARACTERS, 'a'];
+var c3 = new Ten.Cookie();
+c3.set('nonalpha', NONALPHA_CHARACTERS);
+c3.set('array', ARRAY);
+
+var c4 = new Ten.Cookie();
+ok (c4.get('nonalpha') == NONALPHA_CHARACTERS,  'store/restore non-alpha characters');
+ok (c4.get('array').length == 2,                'store/restore array');
+ok (c4.get('array')[0] == NONALPHA_CHARACTERS,  'store/restore array');
+ok (c4.get('array')[1] == 'a',                  'store/restore array');
+
+var c5 = new Ten.Cookie();
+is (c5.set('x', 'y'), 'x=y; path=/', 'normal cookie');
+is (c5.set('x', 'y', { path: 'tests' }), 'x=y; path=tests', 'path option');
+is (c5.set('x', 'y', new Date(0)), 'x=y; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/', 'deprecated expires option');
+is (c5.set('x', 'y', { expires: new Date(0) }), 'x=y; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/', 'expires option');
+is (c5.set('x', 'y', { domain:'.jp' }), 'x=y; domain=.jp; path=/', 'domain option');
+
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Cookie - Cookie utility
+
+<h1></h1>
+
+<h1>Class Methods</h1>
+
+<h2>parse(<var>cookie-string = document.cookie</var>)</h2>
+
+<p>Parses cookie string and returns key/value hash.</p>
+
+<h1>Methods</h1>
+
+<h2>set(<var>key</var>, <var>value</var>[, <var>option</var>])</h2>
+
+<p>Stores cookie <var>key</var>=<var>value</var> . If value is an Array, value is stored like a&amp;b&amp;c .</p>
+
+<p><var>option</var>'s values for 'expires', 'domain', 'path' are used to specify cookie's corresponding information.</p>
+
+<p>Returns a Set-Cookie: line.</p>
+
+<h2>Expires format</h2>
+
+<p><var>option.expires</var> can be Date or String. If <var>expires</var> has method toUTCString(), its result is set in expires field. If <var>expires</var> matches regexp <code>/^\+?\d+[ymdh]/</code>, it is converted to corresponding date. Otherwise <var>expires</var> itself is used.</p>
+
+<h2>get(<var>key</var>)</h2>
+
+<p>Returns value associated with <var>key</var>. Returns <code>undefined</code> if no value is associated.</p>
+
+<h2>has(<var>key</var>)</h2>
+
+<p>Returns true if any value is associated with <var>key</var>.</p>
+
+<h2>clear(<var>key</var>)</h2>
+
+<p>Clear value associated with <var>key</var>.</p>
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+var cookie = new Ten.Cookie();
+cookie.defaultExpires = '+3y';
+
+if (cookie.has('key')) {
+    var value = cookie.get('key');
+    cookie.clear('key');
+} else {
+    cookie.set('key', value);
+    // or
+    cookie.set('key', value, { expires: '+3y' });
+}
+</pre>
+
+</div>
+</body>
+</html>

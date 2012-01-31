@@ -1,0 +1,88 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test"><script>
+with ({ logger: new Ten.Logger() }) {
+    logger.error('log #1 - error');
+    logger.warn ('log #2 - warn');
+    logger.info ('log #3 - info');
+    logger.debug('this should not appear in the log');
+}
+
+with ({ logger: new Ten.Logger('error') }) {
+    logger.error('log #4 - error');
+    logger.warn ('this should not appear in the log');
+    logger.info ('this should not appear in the log');
+    logger.debug('this should not appear in the log');
+}
+
+window.onload = function() {
+    with ({ logger: new Ten.Logger() }) {
+        logger.fallbackElement = document.body.appendChild(document.createElement('pre'));
+        logger.info('Logging with fallbackElement:');
+        logger.error('log #5 - error');
+        logger.warn ('log #6 - warn');
+        logger.info ('log #7 - info');
+        logger.debug('this should not appear in the log');
+    }
+};
+
+with ({ logger: new Ten.Logger() }) {
+    logger.logFunction = function(level, args) { alert(level + ': ' + args) };
+    logger.error('hoge');
+    logger.info('fuga');
+}
+
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+<p>Ten.Logger - Logger utility</p>
+
+<p>Ten.Logger automatically uses browser console (Firebug, Opera/Safari console). If browser does not have console, you can set fallbackElement to show logs in HTML element.</p>
+
+<h1>Methods</h1>
+
+<h2>error(message, ...), warn(message, ...), info(message, ...), debug(message, ...)</h2>
+
+<p>Log error/warn/info/debug message.</p>
+
+<h1>Properties</h1>
+
+<h2>level</h2>
+
+<p>Logs under this.level are not recorded.</p>
+
+<h2>fallbackElement</h2>
+
+<p>If browser does not have console, log messages are shown in this element.</p>
+
+<h2>logFunction</h2>
+
+<p>Modify this function to customize logging behavior.</p>
+
+<h2>logs</h2>
+
+<p>Stores all logs.</p>
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+var logger = new Ten.Logger();
+logger.error('error message');
+logger.info('info message');
+
+var logger = new Ten.Logger('error');
+logger.debug('debug message'); // not logged
+
+logger.fallbackElement = $('debug');
+</pre>
+
+</div>
+</body>
+</html>

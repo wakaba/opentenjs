@@ -1,0 +1,20 @@
+=head1 NAME
+
+Ten.js - Light Weight JavaScript Framework
+
+=head1 DESCRIPTION
+
+Please see test html files under tests directory for detailed information.
+
+=head1 AUTHOR
+
+Junya Kondo, E<lt>http://d.hatena.ne.jp/jkondo/E<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) Hatena Inc. All Rights Reserved.
+
+This library is free software; you may redistribute it and/or modify
+it under the same terms as the Perl programming language.
+
+=cut

@@ -1,0 +1,159 @@
+Revision history for Ten.js
+0.44 2011-07-28
+    - Added Ten.Browser.is3DS
+
+0.43 2011-02-25
+    - Added Ten.Browser.isSmartPhone
+    - Fixed Ten.DOM.hasClassName
+
+0.42 2011-01-26
+    - update jsDeffered
+
+0.41 2011-01-17
+    - Fixed Ten.XHR.isSafeUri
+
+0.40 2011-01-17
+    - Fixed Ten.JSONP
+
+0.39 2010-12-22
+    - Fixed Ten._Selector._elementArrayFlatten
+    - Fixed Ten.XHR
+
+0.38 2010-07-22
+    - Fixed Ten.Selector.getElementsBySelector
+    - Fixed Ten.XHR.makePostData (by hatena bookmark team)
+
+0.37 2010-07-08
+    - Fixed Ten.Geometry.getDocumentSize / getWindowSize
+
+0.36 2010-06-18
+    - Fixed Ten.Browser isSafari
+
+0.35 2010-05-13
+    - Added Ten.Browser iPad,IE8,IE9,Wii support
+
+0.34 2010-05-10
+    - Added Ten.Browser iPhone Simulator support
+
+0.33 2010-04-16
+    - Changed Ten.SubWindow elements' zIndex
+
+0.32 2010-04-02
+    - Changed Ten.DOM.applyStyle can use function argument (by motemen)
+
+0.31 2010-03-12
+    - Changed small bug fix
+
+0.30 2010-03-08
+    - Added Ten.Browser/ isIPhone, isDSi, isAndroid , isTouch , isIE6 , isIE7
+    - update jsDeffered
+
+0.29 2009-12-2
+    - Fixed error on Chrome dev
+
+0.28 2009-11-09
+    - Remove strict warnings (cho45)
+    - Added createElementFromString (cho45)
+    - Added jsDeffered 0.3.0 (cho45)
+
+0.27 2009-09-17
+    - Changed Ten.DOM.getElementsByTagAndClassName
+    - Changed Ten.Array.isArray
+
+0.26 2009-09-09
+    - Changed Ten.DOM.getElementsByClassName
+    - Changed Ten.querySelector
+
+0.25 2009-08-18
+    - Changed Ten.DOM.hasClassName
+    - Changed Ten.DOM.scrapeText
+    - Changed don't override when loaded
+
+0.24 2009-06-17
+     - Added Ten.querySelectorAll / Ten.querySelector
+
+0.23 2009-06-15
+     - Changed Ten.Observer.start using indexOf / sbstr (by scondlife)
+
+0.22 2009-04-17
+     - Revert Changed for syntax to "for(var i = 0, len = args.length ; i < len ; i++)"
+
+0.21 2009-04-16
+     - Changed for syntax to "for(var i = 0, len = args.length ; i < len ; i++)"
+     - Changed Ten.JSONP add timestamp by Date().getTime() value
+     - Changed Ten.Browser add isSupportsXPath (by secondlife)
+     - Changed Ten.Browser.version supports Chrome version
+
+0.20 2009-01-21
+     - Added Ten.Array.indexOf
+     - Changed Ten.Geometry.getElementPosition using browser methods
+     - Added removeAllChildren
+     - Added Ten.Geometry.getWindowSize (by motemen)
+     - Changed Ten.Observer to be able to stop/start (by secondlife)
+     - Added Ten.Cookie (by motemen)
+     - Added Safari check to DOMContentLoaded (by nagayama)
+     - Added Ten.Browser.isChrome (by secondlife)
+
+0.19 2007-10-23
+     - Changed Ten.DOM load observer to jQuery, EventDispatcher based function
+     - Added Ten.Array.dup for copying arrays
+
+0.18 2007-10-16
+     - Changed Ten.Array, Function to Object (from Ten.Class)
+     - Added value check in makepostdata
+     - Changed applyStyle using temporary variable
+     - Added Ten.DOM.addClassName, removeClassName
+     - Added Ten.DOM.nextSiblingInSource
+
+0.17 2007-10-11
+     - Added Ten.Element
+     - Added Ten.DOM.unshiftChild, removeChild ..
+
+0.16 2007-10-05
+     - Added Ten.Highlight
+
+0.15 2007-10-02
+     - Added Ten.Color
+     - Added insertBefore, insertAfter to Ten.DOM
+
+0.14 2007-09-28
+     - Added Ten.Function.bind
+
+0.13 2007-09-25
+     - Added Ten.EventDispatcher (thanks secondlife)
+     - Changed Ten.JSONP to receive single function as the 2nd argument
+     - Wrote some tests
+
+0.12 2007-09-24
+     - Added pseudo-class support to Ten.Selector
+
+0.11 2007-09-19
+     - Added Ten.DOM.getSelectedText (thanks motemen)
+
+0.10 2007-09-17
+     - Added Ten.Selector & getElementsBySelector
+
+0.09 2007-09-05
+     - Added Ten.Style.getGlobalStyle (thanks secondlife)
+
+0.07 2007-04-25
+     - Removed log, Array.each from Ten
+     - Added target to Ten.Event
+
+0.05 2007-03-27
+     - Changed name to Ten
+     - Rewrote Ten.Class
+     - Added SUPER call for Ten.Class, Ten.Class prototype
+     - Added constructor call for Ten.Class prototype
+
+0.04 2007-03-25
+     - Added getMousePosition to Geometry
+
+0.03 2007-01-25
+     - Added Hatena.Geometry
+
+0.02 2007-01-24
+     - Added Hatena.XHR
+
+0.01 2007-01-23
+     - Initial version

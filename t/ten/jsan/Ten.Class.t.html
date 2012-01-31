@@ -1,0 +1,268 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+<style>
+table pre {
+  height: 100%;
+  font-size: 110%;
+}
+</style>
+</head>
+<body>
+<pre id="test"><script>
+new JSAN('lib').use('Test.More');
+plan({tests: 11});
+
+/* Base Class */
+var Button = new Ten.Class({
+    initialize: function(title) {
+        this.title = title;
+        this.button = this.constructor.createButton(title);
+    },
+    createButton: function(value) {
+        var button = document.createElement('button');
+        button.innerHTML = value;
+        button.style.display = 'none';
+        document.body.appendChild(button);
+        return button;
+    },
+    deleteButton: function(b) {
+        return 'delete button';
+    }
+},{
+    show: function() {
+        this.button.style.display = 'block';
+        return 'button show';
+    },
+    hide: function() {
+        this.button.style.display = 'none';
+    }
+});
+
+/* has class methods, doesn't have instance methods */
+var WideButton = new Ten.Class({
+    base: [Button],
+    initialize: function(title) {
+        this.title = title;
+        this.button = this.constructor.createButton(title);
+    },
+    createButton: function(value) {
+        var button = WideButton.SUPER.createButton(value);
+        button.style.padding = '0 5em';
+        return button;
+    }
+});
+
+/* doesn't have class methods, has instance methods */
+var WideWideButton = new Ten.Class({
+    base: [Button]
+},{
+    show: function() {
+        this.button.innerHTML += this.button.innerHTML;
+        this.button.style.padding = '0 5em';
+        this.SUPER.show.call(this);
+        return 'wwbutton show';
+    }
+});
+
+/* HighButton */
+var HighButton = new Ten.Class({
+    base: [Button],
+    initialize: function(title) {
+        this.constructor.SUPER.call(this, title);
+        this.button.style.padding = '1em 0';
+    }
+});
+
+/* RedButton */
+var RedButton = new Ten.Class({
+    base: [Button],
+    initialize: function(title) {
+        this.title = title;
+        this.button = this.constructor.createButton(title);
+        this.button.style.color = 'red';
+    }
+});
+
+var b = new Button('test');
+ok (b, 'button');
+is (b.show(), 'button show', 'button show');
+
+var wb = new WideButton('Im wide.');
+ok (wb, 'wide button');
+is (wb.show(), 'button show', 'wbutton show');
+
+var wwb = new WideWideButton('Im wide wide.');
+ok (wwb, 'wide wide button');
+is (wwb.show(), 'wwbutton show', 'wwbutton show');
+
+var hb = new HighButton('Im high!');
+ok (hb, 'high button');
+is (hb.show(), 'button show', 'hbutton show');
+is (HighButton.deleteButton(hb), 'delete button', 'delete button');
+
+var rb = new RedButton('Red');
+ok (rb, 'red button');
+is (rb.show(), 'button show', 'rbutton show');
+
+</script></pre>
+
+<div class="pod">
+<h1>NAME</h1>
+
+Ten.Class - Base Class for Object Oriented Programming in JavaScript
+
+<h1>SYNOPSYS</h1>
+<pre>
+var Button = new Ten.Class({
+    initialize: function(title) {
+        this.title = title;
+        this.button = this.constructor.createButton(title);
+    },
+    createButton: function(value) {
+        var button = document.createElement('button');
+        button.innerHTML = value;
+        button.style.display = 'none';
+        document.body.appendChild(button);
+        return button;
+    }
+},{
+    show: function() {
+        this.button.style.display = 'block';
+    },
+    hide: function() {
+        this.button.style.display = 'none';
+    }
+});
+
+var SubButton = new Ten.Class({
+    base: [Button]
+},{
+    show: function() {
+        this.SUPER.show.call(this);
+        alert('Im here');
+    }
+});
+</pre>
+
+<h1>CLASS RELATIONSHIPS</h1>
+
+Here are the relationships in Parent and Subclass and their prototypes.
+
+<img src="class_relationships.gif" />
+
+<h1>METHODS</h1>
+
+<p>You can use <code>constructor</code> in your instanced, <code>SUPER</code> in your subclasses and call their methods as this table.</p>
+
+<table>
+  <tr>
+    <td></td>
+    <th>CASE: MySubClass has the method</th>
+    <th>CASE: MySubClass doesn't have the method</th>
+  </tr>
+  <tr>
+    <th>Call own constructor</th>
+    <td><pre>
+new MySubClass(a,b,c);
+</pre></td>
+    <td><pre>
+-
+</pre></td>
+  </tr>
+
+  <tr>
+    <th>Call parent constructor</th>
+    <td><pre>
+var self = this.constructor.SUPER.call(this,a,b,c);
+var self = MySubClass.SUPER.call(this,a,b,c);
+var self = new MyClass(a,b,c);
+// And you should,
+return self;
+</pre></td>
+    <td><pre>
+new MySubClass(a,b,c);
+</pre></td>
+  </tr>
+
+  <tr>
+    <th>Call own class method</th>
+    <td><pre>
+this.constructor.classMethod();
+MySubClass.classMethod();
+</pre></td>
+    <td><pre>
+-
+</pre></td>
+  </tr>
+
+  <tr>
+    <th>Call parent class method</th>
+    <td><pre>
+this.constructor.SUPER.classMethod();
+MySubClass.SUPER.classMethod();
+MyClass.classMethod();
+</pre></td>
+    <td><pre>
+this.constructor.classMethod();
+MySubClass.classMethod();
+MyClass.classMethod();
+</pre></td>
+  </tr>
+
+  <tr>
+    <th>Call own instance method</th>
+    <td><pre>
+this.instanceMethod();
+</pre></td>
+    <td><pre>
+-
+</pre></td>
+  </tr>
+
+  <tr>
+    <th>Call parent instance method</th>
+    <td><pre>
+this.SUPER.instanceMethod.call(this);
+</pre></td>
+    <td><pre>
+this.instanceMethod();
+</pre></td>
+  </tr>
+
+</table>
+
+<h1>INHERITANCE AND SINGLETON</h1>
+
+<p>When you make a subclass and use singleton model, be careful to treat the 
+return value in constructor function.</p>
+<p>Here are a exsample of parent and subclass using singleton model.</p>
+
+<pre>
+// paretent class (uses singleton)
+Ten.SubWindow = new Ten.Class({
+    initialize: function() {
+        var c = this.constructor;
+        if (c.singleton && c._cache) {
+            return c._cache;
+        }
+        var div = document.createElement('div');
+        this.window = div;
+        ..
+        return this;
+    },
+// subclass
+Hatena.Star.CommentScreen = new Ten.Class({
+    base: [Ten.SubWindow],
+    initialize: function() {
+        var self = this.constructor.SUPER.call(this);
+        if (!self.commentsContainer) self.addCommentsContainer();
+        return self;
+    },
+</pre>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<script type="text/javascript">
+function $(id) { return document.getElementById(id) }
+
+new Ten.Observer(Ten.DOM, 'DOMContentLoaded', function() {
+    var div = document.getElementById('hello');
+    $('tenload').innerHTML = 'Ten.DOM is Loaded. #hello says "' + div.innerHTML + '"';
+});
+new Ten.Observer(window, 'onload', function() {
+    var div = document.getElementById('hello');
+    $('winload').innerHTML = 'window is Loaded. #hello says "' + div.innerHTML + '"';
+});
+</script>
+<body>
+<pre id="test" class="test"><script>
+new Ten.Observer(window, 'onload', function() {
+    new JSAN('lib').use('Test.More');
+    plan({tests: 21});
+
+    var pods = Ten.DOM.getElementsByTagAndClassName('div','pod',document);
+    ok (pods, 'div.pod');
+    ok (pods[0], 'div.pod[0]');
+
+    var pods = Ten.DOM.getElementsByClassName('pod');
+    ok (pods, 'pod');
+    ok (pods[0], 'div.pod[0]');
+    ok (pods[1], 'h1.pod[0]');
+    var ul = $('insert-test');
+    var li2 = ul.getElementsByTagName('li')[0];
+    var li1 = document.createElement('li');
+    li1.innerHTML = '1st item';
+    Ten.DOM.insertBefore(li1, li2);
+    var li3 = document.createElement('li');
+    li3.innerHTML = '3rd item';
+    Ten.DOM.insertAfter(li3, li2);
+
+    var next = Ten.DOM.nextSiblingInSource(li1);
+    ok (next.nodeType == 3, 'nextSiblingInSource');
+    ok (next.nodeValue == '1st item');
+
+    next = Ten.DOM.nextSiblingInSource(next);
+    ok (next.tagName.toLowerCase() == 'li', 'li');
+
+    var test = document.getElementById('test');
+    ok (Ten.DOM.hasClassName(test, 'test'));
+    Ten.DOM.addClassName(test, 'dom-test');
+    ok (test.className == 'test dom-test');
+    ok (Ten.DOM.hasClassName(test, 'dom-test'));
+    Ten.DOM.removeClassName(test, 'dom-test');
+    ok (test.className == 'test');
+    Ten.DOM.hasClassName(test, 'dom-test');
+    ok (!Ten.DOM.hasClassName(test, 'dom-test'));
+    Ten.DOM.removeClassName(test, 'test');
+    ok (test.className == '');
+    Ten.DOM.addClassName(test, 'test');
+    ok (test.className == 'test');
+
+    var EFS = Ten.DOM.createElementFromString;
+    var ele = EFS("<div />");
+    is(ele.nodeName.toUpperCase(), "DIV"); 
+
+    var ele = EFS("<div><span /></div>");
+    is(ele.nodeName.toUpperCase(), "DIV"); 
+    is(ele.firstChild.nodeName.toUpperCase(), "SPAN"); 
+
+    var EFS = Ten.DOM.createElementFromString;
+    var ele = EFS("<div class='foo'><span class='bar' title='title1'>foobar</span></div>");
+    is(ele.nodeName.toUpperCase(), "DIV"); 
+    is(ele.bar.nodeName.toUpperCase(), "SPAN"); 
+    is(ele.bar.title, "title1"); 
+
+    var parent = document.createElement("div");
+
+    var EFS = Ten.DOM.createElementFromString;
+    var ele = EFS([
+        '<div>',
+            '<span class="foobar" title="Title#{baz}">FooBar#{baz}</span>',
+            'Test#{a}',
+        '</div>'
+    ].join(''), {
+        parent : parent,
+        data : {
+            baz : "Baz",
+            a : "aaa"
+        }
+    });
+
+    is(ele.foobar.innerHTML, "FooBarBaz");
+    is(ele.foobar.title, "TitleBaz");
+    ok(/Testaaa/.test(ele.innerHTML));
+});
+</script></pre>
+
+<div id="hello">Hello! Ten.DOM!</div>
+<img src="http://f.hatena.ne.jp/images/fotolife/j/jkondo/20060911/20060911113118.jpg" width="100" height="100" />
+<img src="http://f.hatena.ne.jp/images/fotolife/j/jkondo/20060904/20060904084506.jpg" width="100" height="100" />
+
+<div id="tenload"></div>
+<div id="winload"></div>
+
+<ul id="insert-test">
+<li>2nd item</li>
+</ul>
+
+<div class="pod">
+
+<h1 class="pod">NAME</h1>
+
+Ten.DOM - DOM utility
+
+<h1>DOMContentLoaded EVENT HANDLING</h1>
+
+<p>You can attach <code>DOMContentLoaded</code> event handler to <code>Ten.DOM</code> for earlier JavaScript execution.
+In many browsers, <code>window.onload</code> event will occur when all images, files are loaded onto the page.
+But usually, it tooks much more time than the DOM tree are already loaded.
+You can attach your handler to <code>Ten.DOM</code> to prevent this.</p>
+
+<p>You must write this code in head or outer js files. 
+If you write this in <code>body</code> or its child elements, it'll not run correctly.</p>
+
+<pre>
+new Ten.Observer(Ten.DOM, 'DOMContentLoaded', function() {
+    alert(document.getElementById('hello'));
+});
+</pre>
+
+</div>
+</body>
+</html>

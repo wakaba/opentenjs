@@ -1,0 +1,79 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+<style>
+table pre {
+  height: 100%;
+  font-size: 110%;
+}
+</style>
+</head>
+<body>
+<pre id="test">
+<script>
+new JSAN('lib').use('Test.More');
+plan({tests: 8});
+
+var dog_name = null;
+
+var Dog = new Ten.Class({
+    initialize: function(name) {
+        this.name = name;
+        Dog.dispatchEvent('create', this);
+    }
+});
+Ten.EventDispatcher.implementEventDispatcher(Dog);
+
+ok (Dog, 'Dog');
+ok (Dog.addEventListener, 'Dog has addEventListener');
+ok (Dog.dispatchEvent, 'Dog has dispatchEvent');
+ok (Dog.removeEventListener, 'Dog has removeEventListener');
+
+var set_dog_name = function(dog) {
+    dog_name = dog.name;
+}
+
+Dog.addEventListener('create', set_dog_name);
+
+ok (Dog.hasEventListener('create'), 'Dog hasEventListener create');
+
+is (dog_name, null, 'dog_name is null');
+var dog = new Dog('cinnamon');
+is (dog_name, 'cinnamon', 'dog_name is cinnamon');
+
+Dog.removeEventListener('create', set_dog_name);
+
+ok (!Dog.hasEventListener('create'), 'Dog not hasEventListener create');
+</script>
+</pre>
+
+<div class="pod">
+<h1>NAME</h1>
+
+Ten.EventDispatcher - Add event dispatcher to objects
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+var Dog = new Ten.Class({
+    initialize: function(name) {
+        this.name = name;
+        Dog.dispatchEvent('create', this);
+    }
+});
+Ten.EventDispatcher.implementEventDispatcher(Dog);
+
+var set_dog_name = function(dog) {
+    dog_name = dog.name;
+}
+
+Dog.addEventListener('create', set_dog_name);
+Dog.removeEventListener('create', set_dog_name);
+</pre>
+
+
+</div>
+</body>
+</html>

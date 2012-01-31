@@ -1,0 +1,145 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+div.error {
+  background-color: #faa;
+}
+</style>
+<body>
+<div class="error">
+<p>Error message <span class="highlight">Highlighted part</span></p>
+</div>
+<p><span class="highlight">Here is also highlighted part</span></p>
+
+<div class="pod">
+<pre>
+var color = new <span class="highlight">Ten.Color</span>(255,0,0,1);
+</pre>
+</div>
+<pre id="test"><script>
+JSAN.use('Test.Simple');
+plan({tests: 31});
+
+var color, elem;
+
+color = new Ten.Color(30,30,30);
+ok (color, 'new color');
+ok (color.r == 30, 'r is 30');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#1e1e1e', 'is #1e1e1e');
+
+color = Ten.Color.parseFromString('rgb(20,20,20)');
+ok (color, 'parseFromString');
+ok (color.r == 20, 'r is 20');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#141414', 'is #141414');
+
+color = Ten.Color.parseFromString('#fff');
+ok (color, 'parseFromString');
+ok (color.r == 255, 'r is 255');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#ffffff', 'is #ffffff');
+
+color = Ten.Color.parseFromString('#5279e7');
+ok (color, 'parseFromString');
+ok (color.r == 82, 'r is 82');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#5279e7', 'is #5279e7');
+
+elem = Ten.DOM.getElementsByTagAndClassName('div','error')[0];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
+ok (color, 'parseFromElementColor');
+ok (color.r == 255, 'r is 255');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#ffaaaa', 'is #ffaaaa');
+
+elem = elem.getElementsByTagName('p')[0];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
+ok (color, 'parseFromElementColor');
+ok (color.r == 255, 'r is 255');
+ok (color.a == 1, 'a is 1');
+ok (color.asHexString() == '#ffaaaa', 'is #ffaaaa');
+
+elem = document.body;
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
+ok ((color === null || color.asHexString() == '#ffffff'), 'is null or #ffffff');
+
+var alpha = new Ten.Color(255,255,0,0.4);
+ok (alpha, 'new alpha');
+
+elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[0];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
+ok (color, 'highlight bgcolor');
+ok (color.asHexString() == '#ffaaaa', 'is #ffaaaa');
+
+color = color.overlay(alpha);
+ok (color.asHexString() == '#ffcc66', 'is #ffcc66');
+elem.style.backgroundColor = color.asHexString();
+
+elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[1];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor') ||
+    new Ten.Color(255,255,255);
+color = color.overlay(alpha);
+ok (color.asHexString() == '#ffff99', 'is #ffff99');
+elem.style.backgroundColor = color.asHexString();
+
+elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[2];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor') ||
+    new Ten.Color(255,255,255);
+color = color.overlay(alpha);
+ok (color.asHexString() == '#f5f58f', 'is #f5f58f');
+elem.style.backgroundColor = color.asHexString();
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Color - Color utility
+
+<h1>Class Methods</h1>
+
+<h2>new(<i>r</i>,<i>g</i>,<i>b</i>,<i>a</i>)</h2>
+
+<pre>
+var color = new Ten.Color(255,0,0,1);
+</pre>
+
+<h2>parseFromString(<i>str</i>)</h2>
+
+<pre>
+var color = Ten.Color.parseFromString('#fff');
+var color = Ten.Color.parseFromString('#5279e7');
+var color = Ten.Color.parseFromString('rgb(255, 255, 0)');
+</pre>
+
+<h2>parseFromElementColor(<i>elem</i>,<i>prop</i>)</h2>
+
+<pre>
+var div = document.getElementById('red');
+var color = Ten.Color.parseFromElementColor(div, 'backgroundColor');
+</pre>
+
+<h1>Instance Methods</h1>
+
+<h2>asHexString</h2>
+<h2>asRGBString</h2>
+<h2>overlay(<i>color</i>)</h2>
+
+<pre>
+var alpha = new Ten.Color(255,255,0,0.4);
+elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[2];
+color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
+color = color.overlay(alpha);
+elem.style.backgroundColor = color.asHexString();
+</pre>
+
+</div>
+</body>
+</html>

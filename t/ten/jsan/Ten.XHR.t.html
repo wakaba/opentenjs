@@ -1,0 +1,151 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.base.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<script type="text/javascript">
+</script>
+<body>
+<pre id="test"><script>
+new JSAN('lib').use('Test.More');
+plan({tests: 12});
+
+var uri = "";
+is(Ten.XHR.isSafeUri(uri), false);
+uri = "http://example.com/";
+is(Ten.XHR.isSafeUri(uri), false);
+uri = "//example.com";
+is(Ten.XHR.isSafeUri(uri), false);
+uri = "/example.com";
+is(Ten.XHR.isSafeUri(uri), true);
+uri = "example";
+is(Ten.XHR.isSafeUri(uri), true);
+uri = "/";
+is(Ten.XHR.isSafeUri(uri), true);
+uri = "./hoge";
+is(Ten.XHR.isSafeUri(uri), true);
+uri = "../moge";
+is(Ten.XHR.isSafeUri(uri), true);
+uri = "moge/hoge.text";
+is(Ten.XHR.isSafeUri(uri), true);
+
+var loader = new Ten.XHR();
+loader.addEventListener('complete', function() {
+        if (this.request && this.request.responseText.length > 1) {
+            ok('1');
+        } else {
+            ok(null);
+        }
+});
+loader.addEventListener('error', function() {
+        alert('error!');
+});
+loader.load('./Ten.XHR.t.html');
+
+var parallelLoader = function() {
+    var loaders = [];
+    parallelLoader.loaders = loaders;
+    var completed = 0;
+    var urlNum = arguments.length;
+    var self = this;
+    var completeHandler = function() {
+        if (urlNum == ++completed) 
+           parallelLoader.dispatchEvent('complete');
+    }
+
+    for (var i = 0; i < arguments.length; i++) {
+        var url = arguments[i];
+        var loader = new Ten.XHR();
+        loaders.push(loader);
+        loader.addEventListener('complete', completeHandler);
+        loader.load(url);
+    }
+};
+Ten.EventDispatcher.implementEventDispatcher(parallelLoader);
+
+parallelLoader.addEventListener('complete', function() {
+    ok('2');
+});
+parallelLoader('./', './Ten.XHR.t.html');
+
+new Ten.XHR('./', {}, function(req) {
+    if (req && req.responseText.length > 1) {
+        ok('3');
+    } else {
+        ok(null);
+    }
+});
+
+var obj = {
+    callbackMethod: function(req) {
+        if (req && req.responseText.length > 1) {
+            ok('5');
+        } else {
+            ok(null);
+        }
+    }
+};
+
+new Ten.XHR('./', {}, obj, 'callbackMethod');
+new Ten.XHR('./', {method: 'POST'}, obj, 'callbackMethod');
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.XHR - XHR utility
+
+<h1>SYNOPSIS</h1>
+
+<pre>
+// simple style
+new Ten.XHR('http://sample.com/', {method: 'POST'}, this, 'showResult'});
+new Ten.XHR(url, {method: post_or_get, data: parameters}, function(req) {
+    alert(req.responseText);
+});
+
+// Event style
+var loader = new Ten.XHR();
+loader.addEventListener('complete', function() {
+        if (this.request && this.request.responseText.length > 1) {
+            ok('1');
+        } else {
+            ok(null);
+        }
+});
+loader.addEventListener('error', function() {
+        alert('error!');
+});
+loader.load(url, parameters);
+
+// Event style example
+var parallelLoader = function() {
+    var loaders = [];
+    parallelLoader.loaders = loaders;
+    var completed = 0;
+    var urlNum = arguments.length;
+    var completeHandler = function() {
+        if (urlNum == ++completed) 
+           parallelLoader.dispatchEvent('complete');
+    }
+
+    for (var i = 0; i < arguments.length; i++) {
+        var url = arguments[i];
+        var loader = new Ten.XHR();
+        loaders.push(loader);
+        loader.addEventListener('complete', completeHandler);
+        loader.load(url);
+    }
+};
+Ten.EventDispatcher.implementEventDispatcher(parallelLoader);
+parallelLoader.addEventListener('complete', function(loaders) {
+    console.log('all loaded!', loaders);
+});
+parallelLoader('./', './Ten.XHR.t.html', url,url2);
+</pre>
+
+</div>
+</body>
+</html>

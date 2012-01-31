@@ -1,0 +1,66 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test"><script>
+JSAN.use('Test.Simple');
+plan({tests: 13});
+
+var arr1 = [1,2,3];
+var arr2 = Ten.Array.dup(arr1);
+
+ok (arr1 != arr2);
+ok (arr1[0] == arr2[0]);
+ok (arr1[1] == arr2[1]);
+ok (arr1[2] == arr2[2]);
+
+ok (arr1.indexOf(2) == 1);
+
+//test Ten.Array.isArray
+var arr3 = new Array();
+ok (Ten.Array.isArray(arr3));
+var arr4 = [];
+ok (Ten.Array.isArray(arr4));
+var str = "hoge";
+ok (!Ten.Array.isArray(str));
+var h2 = document.getElementsByTagName('h2')[0];
+ok (!Ten.Array.isArray(h2));
+var form = document.getElementsByTagName('form')[0];
+ok (!Ten.Array.isArray(form));
+var select = document.getElementsByTagName('select')[0];
+ok (!Ten.Array.isArray(select));
+var div = document.getElementsByTagName('div')[0];
+ok (!Ten.Array.isArray(div));
+(function(){
+  ok (Ten.Array.isArray(arguments));
+})()
+
+
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Array - Array utility
+
+<h1>Class Methods</h1>
+
+<h2>flatten(<i>array</i>)</h2>
+<h2>dup(<i>array</i>)</h2>
+<h2>isArray(<i>obj</i>)</h2>
+  <div style="display:none;">
+    <form >
+    <input type="hidden" name="test" value="test_hidden">
+    <select>
+      <option>a</option>
+      <option>b</option>
+    </select>
+    </form>
+  </div>
+</div>
+</body>
+</html>

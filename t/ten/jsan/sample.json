@@ -1,0 +1,7 @@
+Ten.JSONP.callback({
+    stars: [
+        {name: 'jkondo'},
+        {name: 'reikon'},
+        {name: 'cinnamon'}
+    ]
+});

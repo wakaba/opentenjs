@@ -1,0 +1,40 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<body>
+<pre id="test">
+isIE: <script type="text/javascript">document.write(Ten.Browser.isIE)</script>
+isIE6: <script type="text/javascript">document.write(Ten.Browser.isIE6)</script>
+isIE7: <script type="text/javascript">document.write(Ten.Browser.isIE7)</script>
+isMozilla: <script type="text/javascript">document.write(Ten.Browser.isMozilla)</script>
+isOpera: <script type="text/javascript">document.write(Ten.Browser.isOpera)</script>
+isSafari: <script type="text/javascript">document.write(Ten.Browser.isSafari)</script>
+isFirefox: <script type="text/javascript">document.write(Ten.Browser.isFirefox)</script>
+isChrome: <script type="text/javascript">document.write(Ten.Browser.isChrome)</script>
+version: <script type="text/javascript">document.write(Ten.Browser.version)</script>
+isIPhone: <script type="text/javascript">document.write(Ten.Browser.isIPhone)</script>
+isAndroid: <script type="text/javascript">document.write(Ten.Browser.isAndroid)</script>
+isDSi: <script type="text/javascript">document.write(Ten.Browser.isDSi)</script>
+isTouch: <script type="text/javascript">document.write(Ten.Browser.isTouch)</script>
+</pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Browser - User agent information
+
+<h1>Class Properties</h1>
+
+<h2>isIE, isMozilla, isOpera, isSafari, isFirefox, isChrome </h2>
+<p>Boolean. Indicates which browser the script is running on.</p>
+
+<h2>version</h2>
+<p>Object. Browser version. <code>toString()</code> to obtain full version number (such as '3.1.1'). <code>valueOf()</code> to obtain version number of float value (such as 3.1).
+
+</div>
+</body>
+</html>

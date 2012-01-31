@@ -1,0 +1,98 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="../lib/Ten/Highlight.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+</head>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+div.error {
+  background-color: #faa;
+}
+</style>
+<body>
+<div class="error">
+<p>Error message Highlighted part</p>
+</div>
+<p>Here is also highlighted part</p>
+
+<div class="pod">
+<pre>
+var color = new <span class="highlight">Ten.Color</span>(255,0,0,1);
+</pre>
+</div>
+<input type="text" id="htext" />
+<input type="text" id="htext2" />
+<input type="text" id="htext3" />
+<pre id="test"><script>
+new Ten.Observer(window, 'onload', function() {
+    JSAN.use('Test.Simple');
+    plan({tests: 11});
+
+    var BlueHighlight = new Ten.Class({
+        base: [Ten.Highlight],
+        Color: new Ten.Color(0,0,255,0.3)
+    });
+    var RedHighlight = new Ten.Class({
+        base: [Ten.Highlight],
+        Color: new Ten.Color(255,0,0,0.3)
+    });
+
+    var y = new Ten.Highlight('highlighted');
+    ok (y);
+    y.show();
+    var b = new BlueHighlight('highlighted');
+    ok (b);
+    b.show();
+    var r = new RedHighlight('highlighted');
+    ok (r);
+    r.show();
+
+    var input = document.getElementById('htext');
+    new Ten.Observer(input, 'onkeyup', function() {
+        var text = input.value;
+        if (!text) return;
+            new Ten.Highlight(text).show();
+    });
+
+    var input2 = document.getElementById('htext2');
+    new Ten.Observer(input2, 'onkeyup', function() {
+        var text = input2.value;
+        if (!text) return;
+            new BlueHighlight(text).show();
+    });
+
+    var input3 = document.getElementById('htext3');
+    new Ten.Observer(input3, 'onkeyup', function() {
+        var text = input3.value;
+        if (!text) return;
+            new RedHighlight(text).show();
+    });
+});
+</script></pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Ten.Highlight - Highlight texts in the document.
+
+<h1>SYNOPSIS</h1>
+
+<pre>
+var h = new Ten.Highlight('highlighted');
+h.show();
+
+var BlueHighlight = new Ten.Class({
+    base: [Ten.Highlight],
+    Color: new Ten.Color(0,0,255,0.3)
+});
+var b = new BlueHighlight('highlighted');
+b.show();
+</pre>
+
+</div>
+</body>
+</html>

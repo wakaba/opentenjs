@@ -1,0 +1,75 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+<style>
+table pre {
+  height: 100%;
+  font-size: 110%;
+}
+</style>
+</head>
+<body>
+<pre id="test">
+<script>
+new JSAN('lib').use('Test.More');
+plan({tests: 9});
+
+var log;
+
+ok (Ten.JSONP, 'JSONP');
+
+new Ten.JSONP('sample.json', function(data) {
+    ok (data, 'receive data');
+    ok (data.stars, 'data has stars');
+    is (data.stars.length, 3, 'data has 3 stars');
+    is (data.stars[0].name, 'jkondo', '1 - jkondo');
+});
+
+var Entry = new Ten.Class({
+    initialize: function() {
+        new Ten.JSONP('sample.json', this, 'receiveStars');
+    }
+},{
+    receiveStars: function(data) {
+        this.stars = data.stars;
+        ok (data, 'receive data');
+        ok (data.stars, 'data has stars');
+        is (data.stars.length, 3, 'data has 3 stars');
+        is (data.stars[0].name, 'jkondo', '1 - jkondo');
+    }
+});
+
+new Entry();
+</script>
+</pre>
+
+<div class="pod">
+<h1>NAME</h1>
+
+Ten.JSONP
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+new Ten.JSONP('sample.json', function(data) {
+    log(data);
+});
+
+var Entry = new Ten.Class({
+    initialize: function() {
+        new Ten.JSONP('sample.json', this, 'receiveStars');
+    }
+},{
+    receiveStars: function(data) {
+        this.stars = data.stars;
+    }
+});
+
+new Entry();
+</pre>
+
+</div>
+</body>
+</html>
