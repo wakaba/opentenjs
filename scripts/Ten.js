@@ -316,6 +316,15 @@ Ten.Event = new Ten.Class({
             e.cancelBubble = true;
             e.returnValue = false;
         }
+    },
+    preventDefault: function () {
+        var e = this.event;
+        if (e.preventDefault) e.preventDefault();
+        e.returnValue = false;
+        this._isDefaultPrevented = true;
+    },
+    isDefaultPrevented: function () {
+        return this._isDefaultPrevented || this.event.defaultPrevented || (this.event.returnValue === false);
     }
 });
 
@@ -1421,7 +1430,7 @@ Ten.Browser = {
     isDSi : navigator.userAgent.indexOf('Nintendo DSi') != -1,
     is3DS : navigator.userAgent.indexOf('Nintendo 3DS') != -1,
     isWii : navigator.userAgent.indexOf('Nintendo Wii') != -1,
-    isAndroid : navigator.userAgent.indexOf('Android ') != -1,
+    isAndroid : navigator.userAgent.indexOf('Android') != -1,
     isIPhone : (navigator.userAgent.indexOf('iPod;') != -1 || navigator.userAgent.indexOf('iPhone;') != -1 || navigator.userAgent.indexOf('iPhone Simulator;') != -1),
     isIPad : navigator.userAgent.indexOf('iPad') != -1,
     isSupportsXPath : !!document.evaluate,
@@ -1431,8 +1440,11 @@ Ten.Browser = {
         toString: function() { return this.string }
     }
 };
-Ten.Browser.isTouch = Ten.Browser.isIPhone || Ten.Browser.isAndroid || Ten.Browser.isDSi || Ten.Browser.is3DS || Ten.Browser.isIPad;
+Ten.Browser.isTouch = Ten.Browser.isIPhone || Ten.Browser.isAndroid || Ten.Browser.isDSi || Ten.Browser.is3DS;
 Ten.Browser.isSmartPhone = Ten.Browser.isIPhone || Ten.Browser.isAndroid;
+
+Ten.Event.onKeyDown = ((Ten.Browser.isFirefox && Ten.Browser.isOSX) || Ten.Browser.isOpera) ? 'onkeypress' : 'onkeydown';
+
 
 Ten.Deferred = (function () {
     function Deferred () { return (this instanceof Deferred) ? this.init() : new Deferred() }
