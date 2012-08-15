@@ -355,6 +355,6 @@ Ten.Deferred = (function () {
         return Deferred;
     };
     
-    this.Deferred = Deferred;
+    
     return Deferred;
 })();
