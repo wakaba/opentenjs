@@ -1,0 +1,28 @@
+Revision history for Hatena.Star.js
+
+1.95 2007-12-14
+     - Changed Hatena.Visitor initialization
+
+1.93 2007-10-17
+     - Added Dummy span feature for retrieving bgimage for button,stars.
+     - Removed spaces, return code from entry title
+     - Changed delete confirmation message to show in mutilingual
+
+1.92 2007-10-05
+     - Added Hatena.Star.Highlight
+
+1.91 2007-09-25
+     - Added Ten.EventDispatcher
+     - Changed ConfigLoader.prototype.receiveConfig to ConfigLoader.setConfig(data)
+     - Support *.g.hatena.ne.jp syntax for SiteConfig's hostname
+     - Support 'window.location' for SiteConfig's uri
+
+1.90 2007-09-24
+     - Determined to write Version Number :)
+     - Changes from the previous version are as follows
+     - Changed Site Configuration style using Hatena.Star.SiteConfig
+     - Added SiteConfigWiki feature using Hatena Star Wiki's data
+     - Added event listeners to Hatena.Star, WindowObserver, ConfigLoader, EntryLoader
+
+1.00 2007-07-11
+     - first release version

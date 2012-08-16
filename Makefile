@@ -1,6 +1,8 @@
 WGET = wget
 
-all: scripts/Ten.js scripts/ten-extras.js
+all: \
+  scripts/Ten.js scripts/ten-extras.js \
+  scripts/HatenaStar.jp.js scripts/HatenaStar.com.js
 
 scripts/Ten.js: src/Ten.base.js src/Ten/Deferred.js Makefile
 	perl -n -e 's{\Q/*include Ten.Deferred*/\E}{open my $$file, "<", "src/Ten/Deferred.js"; local $$/ = undef; <$$file>}ge; print' < $< > $@
@@ -86,3 +88,15 @@ scripts/ten-extras.js: \
 	cat scripts/timeline.js >> $@
 	cat src/Ten/Extras/OnLoad.js >> $@
 	cat src/Ten/Extras/License.js >> $@
+
+scripts/HatenaStar.jp.js: \
+    scripts/Ten.js src/Ten/SubWindow.js src/Ten/Highlight.js \
+    src/Hatena.js src/Hatena/Star/HatenaStar.base.js \
+    src/Hatena/Star/BaseURL.jp.js
+	cat $^ > $@
+
+scripts/HatenaStar.com.js: \
+    scripts/Ten.js src/Ten/SubWindow.js src/Ten/Highlight.js \
+    src/Hatena.js src/Hatena/Star/HatenaStar.base.js \
+    src/Hatena/Star/BaseURL.com.js
+	cat $^ > $@

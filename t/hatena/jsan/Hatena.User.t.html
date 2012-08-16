@@ -1,0 +1,60 @@
+<html>
+<head>
+<script type="text/javascript" src="../lib/Ten.js"></script>
+<script type="text/javascript" src="../lib/Hatena.js"></script>
+<script type="text/javascript" src="lib/JSAN.js"></script>
+<link rel="stylesheet" href="http://search.cpan.org/s/style.css" type="text/css" />
+<style>
+table pre {
+  height: 100%;
+  font-size: 110%;
+}
+</style>
+</head>
+<body>
+<pre id="test">
+<script>
+new JSAN('lib').use('Test.More');
+plan({tests: 11});
+
+ok (Hatena, 'Hatena');
+ok (Hatena.User, 'Hatena.User');
+
+var u = new Hatena.User('jkondo');
+ok (u, 'new user');
+is (u.name, 'jkondo', 'name is jkondo');
+
+var img = u.profileIcon();
+ok (img, 'profileIcon');
+is (img.src, 'http://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
+
+var img2 = Hatena.User.getProfileIcon('jkondo');
+ok (img2, 'getProfileIcon');
+is (img2.src, 'http://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
+
+var u2 = new Hatena.User({name: 'cinnamon', rkm: 'abcde'});
+ok (u2, 'user from hash');
+is (u2.name, 'cinnamon', 'name is cinnamon');
+is (u2.rkm, 'abcde', 'has rkm');
+</script>
+</pre>
+
+<div class="pod">
+
+<h1>NAME</h1>
+
+Hatena.User - User class for Hatena Users.
+
+<h1>SYNOPSYS</h1>
+
+<pre>
+var u = new Hatena.User('jkondo');
+document.body.appendChild(u.profileIcon());
+
+Hatena.Visitor = new Hatena.User({name: 'cinnamon', rkm: 'abcde'});
+</pre>
+
+
+</div>
+</body>
+</html>

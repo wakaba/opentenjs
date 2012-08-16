@@ -1,0 +1,10 @@
+Hatena.Star.BaseURL = 'http://s.hatena.com/';
+Hatena.Star.PortalURL = 'http://www.hatena.com/';
+Hatena.Star.Text.loading = 'Loading\u2026';
+Hatena.Star.Text.close   = 'Close';
+Hatena.Star.Text.colorstar_for_smartphone = "";
+Hatena.Star.Text.for_colorstar_shop = "Go to the Color Star Shop";
+Hatena.Star.Text.unlimited = "\u221E";
+Hatena.Star.Text.sending   = "Sending...";
+Hatena.Star.UgoMemoURL = 'http://flipnote.hatena.com/';
+Hatena.Star.HaikuURL   = 'http://h.hatena.com/';

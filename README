@@ -10,6 +10,8 @@ scripts/Ten.js
 scripts/ten-extras.js
 scripts/timeline.js
 scripts/Ten-Wii.js
+scripts/HatenaStar.jp.js
+scripts/HatenaStar.com.js
 
 * Regeneration
 
@@ -32,8 +34,10 @@ ten-extras.js, timeline.js, and Ten-Wii.js are authored by Wakaba
 
 * Acknowledgements
 
-Following people contributed to Ten.js and related scripts:
-id:secondlife, id:nagayama, id:motemen, cho45, id:nanto_vi, and
+Following people contributed to Ten.js and related scripts: id:aql,
+id:chris4403, id:higepon, id:hitode909, Junya Kondo, Kentaro
+Kuribayashi, id:onishi, id:secondlife, id:shiba_yu36, id:tikeda,
+id:nagayama, id:nmy, id:motemen, id:nobuoka, cho45, id:nanto_vi, and
 Wakaba.
 
 Ten.js contains JSDeferred by cho45.  ten-extras.js contains
@@ -43,3 +47,5 @@ TimelineObserver.js by hitode909.
 
 Ten-Wii.js was developed in Hatena Development Camp, Spring 2009 by
 Wakaba.
+
+HatenaStar.js contains Hatena.js, which is authored by Junya Kondo.
