@@ -1,0 +1,131 @@
+* Ten.Wii
+
+Ten.Wii は Wii リモコンのイベントを扱うための JavaScript モジュールです。 Wii 上の Opera 以外の Web ブラウザーでは意味がありませんが、害にはならないよう作ってあります (ただしチェックはしていないので、バグっているかもしれません)。
+
+** 開始・終了
+
+Ten.Wii はシングルトンで、インスタンス化は不要です。 Wii リモコンの状態はイベント駆動型ではないので、 setInterval を使って定期的に取得します。 start、stop メソッドで状態取得を制御できます。初期状態では stop しています。
+
+|*Ten.Wii.start()|Wii リモコンの定期的な状態取得を開始します。|
+|*Ten.Wii.stop()|Wii リモコンの定期的な状態取得を終了します。|
+|*Ten.Wii.pollTimer|Wii リモコンの定期的な状態取得の間隔 (ms) です。状態取得途中に変更しても即座には反映されません。|
+|*Ten.Wii.updateState()|Wii リモコンの状態を取得します。通常はこのメソッドを呼び出す必要はありません。各種プロパティーが更新され、必要ならイベントが発火されます。|
+
+** Wii リモコン
+
+リモコンには 0 (1コン) ～ 3 (4コン) の番号が割り当てられています。 0 からはじまることに注意してください。
+
+リモコンが接続されている場合、そのうちいずれか1つは Web ブラウザーの制御権を有しています。
+
+|*Ten.Wii.activeController|Web ブラウザーの制御権を有するリモコンの番号です。|
+
+** ポインター
+
+|*Ten.Wii.getPointingPosition(i)|リモコン i のポインターの現在の座標を返します。返されるオブジェクトの x プロパティー、 y プロパティーがそれぞれ x、y 座標です。|
+|*Ten.Wii.getPointingTarget(i)|リモコン i のポインターが現在指している要素ノード (または、なければ文書ノード) を返します。|
+
+*** DOM イベント
+
+Wii リモコンのポインターが移動すると、ポインターが指している(た)対象において ten-wiiremoteover, ten-wiiremotemove, ten-wiiremoteout 各イベントが発火されます。
+
+|*ten-wiiremoteover (イベント)|ポインターが対象の上に入りました。|
+|*ten-wiiremotemove (イベント)|ポインターが対象の上で移動しました。|
+|*ten-wiiremoteout (イベント)|ポインターが対象から外れました。|
+
+これらイベントのイベントオブジェクトには次のプロパティーがあります。
+|*tenFromTarget|ポインターがそれまで指していた対象です。 (ten-wiiremotemove にはありません。)|
+|*tenToTarget|ポインターが新たに指す対象です。 (ten-wiiremotemove にはありません。)|
+|*pageX|ポインターの x 座標です。|
+|*pageY|ポインターの y 座標です。|
+|*tenRemoteId|リモコン番号です。|
+
+*** 要素クラス
+
+A ボタンが押されている間、ポインターが指している対象の要素に ten-wiiremoteactive クラスが付与されます。
+
+|*.ten-wiiremotehover|その要素をポインターが指しているリモコンがあります。|
+|*.ten-wiiremotehover-0|.ten-wiiremotehover が有効で、かつそのリモコンは 0 (1コン) です。|
+|*.ten-wiiremotehover-1|.ten-wiiremotehover が有効で、かつそのリモコンは 1 (2コン) です。|
+|*.ten-wiiremotehover-2|.ten-wiiremotehover が有効で、かつそのリモコンは 2 (3コン) です。|
+|*.ten-wiiremotehover-3|.ten-wiiremotehover が有効で、かつそのリモコンは 3 (4コン) です。|
+
+現状、 :hover 擬似クラスとは違って必ずポインターが指している対象要素だけに付与されます。この仕様は将来変更するかもしれません。
+
+*** ポインター座標の制限事項
+
+制御権を持たないリモコンの指す座標は正確に取得できません。 Ten.Wii 内である程度の補正を行っていますが、それでも画面端では多少ずれることがあります。クラス付与対象の要素も座標のずれに伴いずれることがあります。
+
+** ボタン
+
+*** DOM イベント
+
+Wii リモコンのボタンが押されると、ポインターが指している対象において ten-wiiremotebuttondown, ten-wiiremotebuttonup, ten-wiiremoteclick 各イベントが発火されます。
+
+|*ten-wiiremotebuttondown (イベント)|ボタンが押されました。|
+|*ten-wiiremotebuttonup (イベント)|押されたボタンが離されました。|
+|*ten-wiiremoteclick (イベント)|A ボタンが押されました。このイベントは ten-wiiremotebuttonup の直後に発火されます。|
+
+これらイベントのイベントオブジェクトには次のプロパティーがあります。
+|*target|ボタンが押された際にポインターが指していた対象です。|
+|*pageX|ボタンが押された際のポインターの x 座標です。|
+|*pageY|ボタンが押された際のポインターの y 座標です。|
+|*tenRemoteId|リモコン番号です。|
+|*keyCode|ボタン番号です。|
+
+ボタン番号は次の通りです。
+
+|*Ten.Wii.NORTH_BUTTON|175|↑|
+|*Ten.Wii.SOUTH_BUTTON|176|↓|
+|*Ten.Wii.LEFT_BUTTON|178|←|
+|*Ten.Wii.RIGHT_BUTTON|177|→|
+|*Ten.Wii.A_BUTTON|177|A|
+|*Ten.Wii.B_BUTTON|13|B|
+|*Ten.Wii.MINUS_BUTTON|171|－|
+|*Ten.Wii.PLUS_BUTTON|174|+|
+|*Ten.Wii.ONE_BUTTON|172|1|
+|*Ten.Wii.TWO_BUTTON|173|2|
+
+*** 要素クラス
+
+A ボタンが押されている間、ポインターが指している対象の要素に ten-wiiremoteactive クラスが付与されます。
+
+|*.ten-wiiremoteactive|その要素をポインターが指しているリモコンの A ボタンが押されています。|
+|*.ten-wiiremoteactive-0|.ten-wiiremoteactive が有効で、かつそのリモコンは 0 (1コン) です。|
+|*.ten-wiiremoteactive-1|.ten-wiiremoteactive が有効で、かつそのリモコンは 1 (2コン) です。|
+|*.ten-wiiremoteactive-2|.ten-wiiremoteactive が有効で、かつそのリモコンは 2 (3コン) です。|
+|*.ten-wiiremoteactive-3|.ten-wiiremoteactive が有効で、かつそのリモコンは 3 (4コン) です。|
+
+現状、 :active 擬似クラスとは違って必ずポインターが指している対象要素だけに付与されます。この仕様は将来変更するかもしれません。
+
+*** ハイパーリンク
+
+通常 Wii 上の Opera はリモコン 0 (1コン) でしかハイパーリンク (a 要素、area 要素) をたどることができません。 Ten.Wii のメソッドを使うと他のリモコンにも反応させることができます。
+
+|*Ten.Wii.makeLinkClickableByAnyRemote(el)|ハイパーリンク要素 el がすべてのリモコンに反応するようにします。|
+|*Ten.Wii.makeLinksClickableByAnyRemote(selectors)|selectors に一致する文書中の要素がすべてのリモコンに反応するようにします。 selectors は CSS で使われる選択子ですが、 Ten.Selector が対応しているもののみ利用できます。|
+
+*** ボタンタイミング取得の制限事項
+
+制御権を持つリモコンではボタンを離したタイミングを正しく取得できず、 DOM イベント ten-wiiremotebuttonup は ten-wiiremotebuttondown の直後に発火されます。ten-wiiremotebuttonup 直後に発火される ten-wiiremoteclick のタイミングも早まります。クラスが削除されるタイミングも同様です。
+
+*** クリックイベント駆動処理のヒント
+
+通常の Web ブラウザーでクリック時に行いたい処理をどのリモコンの A ボタンにも反応させたい場合、
+- 単純なハイパーリンクなら上記 Ten.Wii.makeLinksClickableByAnyRemote メソッドを使用します。
+- それ以外の場合は ten-wiiremoteclick イベントを使用します。
+
+後者の場合、単純に ten-wiiremoteclick イベントを (既存の click イベントの処理の他に) 追加すると制御権のあるリモコンの A ボタンで二重に処理が起動してしまいます。したがって、次のいずれかの対策が必要です。
+- Ten.Browser.isWii の真偽により処理を登録するイベント名を変更する
+- <del>ten-wiiremoteclick イベントをキャンセルする (イベントオブジェクトの preventDefault() メソッドまたは Ten.Event の stop() メソッドを呼び出す)</del>
+-- 登録されたイベントハンドラーの呼び出し順序的にこちらの方法は不確実です。
+
+ten-wiiremotemove など他のイベントにも同様のことがいえますが、前者の方法しか使えません。
+
+* 既知の不具合
+
+- 1コンが画面内を指していないと2コン以降の座標が狂いまくっているっぽい
+-- 直したはずなのに直ってない
+- ブラウザーの「戻る」で移動した後に正しく動作しないことがあるっぽい
+-- setInterval とか move イベントあたりまでは正しく動作しているっぽい
+-- 上記バグのせいかも、要確認
+- hover はやっぱり親要素含め全部についてほしい
