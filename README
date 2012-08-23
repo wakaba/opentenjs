@@ -29,8 +29,8 @@ The OpenTen.js repository is made and maintained by Wakaba
 
 Authors of Ten.js are Junya Kondo and id:chris4403.
 
-ten-extras.js, timeline.js, and Ten-Wii.js are authored by Wakaba
-<wakabatan@hatena.ne.jp>.
+ten-extras.js, timeline.js, Ten-Wii.js, and Hatena.Emoji are authored
+by Wakaba <wakabatan@hatena.ne.jp>.
 
 * Acknowledgements
 
@@ -46,6 +46,7 @@ also contains NotificationArea.js, which derived from
 TimelineObserver.js by hitode909.
 
 Ten-Wii.js was developed in Hatena Development Camp, Spring 2009 by
-Wakaba.
+Wakaba.  Hatena.Emoji was developed as part of Ugomemo Hatena Plus
+project.
 
 HatenaStar.js contains Hatena.js, which is authored by Junya Kondo.

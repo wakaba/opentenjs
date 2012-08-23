@@ -1,14 +1,16 @@
 WGET = wget
+PERL = perl
 
 all: \
   scripts/Ten.js scripts/ten-extras.js \
-  scripts/HatenaStar.jp.js scripts/HatenaStar.com.js
+  scripts/HatenaStar.jp.js scripts/HatenaStar.com.js \
+  src/Hatena/Emoji/Palette/Data.js
 
 scripts/Ten.js: src/Ten.base.js src/Ten/Deferred.js Makefile
-	perl -n -e 's{\Q/*include Ten.Deferred*/\E}{open my $$file, "<", "src/Ten/Deferred.js"; local $$/ = undef; <$$file>}ge; print' < $< > $@
+	$(PERL) -n -e 's{\Q/*include Ten.Deferred*/\E}{open my $$file, "<", "src/Ten/Deferred.js"; local $$/ = undef; <$$file>}ge; print' < $< > $@
 
 src/Ten/Deferred.js: src/Ten/Deferred.base.js modules/jsdeferred/jsdeferred.js Makefile
-	perl -n -e 'sub mini ($$) { my $$s = $$_[0]; $$s =~ s{\x0A?/\*.*?\*/}{}gs; $$s =~ s{\x0A?\s*//.*}{}g; $$s =~ s{\A\s+|\s+\z}{}g; $$s } s{\Q/*include JSDeferred*/\E}{join "", map { s/^/    /mg; s/\t/    /g; s{\bthis\.Deferred = Deferred;}{}; $$_ } mini do { open my $$file, "<", "modules/jsdeferred/jsdeferred.js"; local $$/ = undef; <$$file> }}ge; print' < $< > $@
+	$(PERL) -n -e 'sub mini ($$) { my $$s = $$_[0]; $$s =~ s{\x0A?/\*.*?\*/}{}gs; $$s =~ s{\x0A?\s*//.*}{}g; $$s =~ s{\A\s+|\s+\z}{}g; $$s } s{\Q/*include JSDeferred*/\E}{join "", map { s/^/    /mg; s/\t/    /g; s{\bthis\.Deferred = Deferred;}{}; $$_ } mini do { open my $$file, "<", "modules/jsdeferred/jsdeferred.js"; local $$/ = undef; <$$file> }}ge; print' < $< > $@
 
 src/NodeRect.js:
 	$(WGET) -O $@ https://raw.github.com/wakaba/samijs/master/noderect/NodeRect.js
@@ -100,3 +102,23 @@ scripts/HatenaStar.com.js: \
     src/Hatena.js src/Hatena/Star/HatenaStar.base.js \
     src/Hatena/Star/BaseURL.com.js
 	cat $^ > $@
+
+src/Hatena/Emoji/Palette/Data.js: \
+  modules/hatena-emoji-data/collections/hatena.json Makefile
+	$(PERL) -MJSON::XS \
+            -e 'open $$file, "<", shift; #\
+	        local $$/ = undef; #\
+	        $$data = JSON::XS->new->utf8->decode(scalar <$$file>); #\
+                $$palette = { #\
+                    DS => $$data->{hatena_ds}, #\
+                    KEITAI_1 => $$data->{hatena_keitai_1}, #\
+                    KEITAI_2 => $$data->{hatena_keitai_2}, #\
+                    KEITAI_3 => $$data->{hatena_keitai_3}, #\
+                }; \
+                print "\nif (typeof(self.Hatena) == \x27undefined\x27) var Hatena = {};\n"; \
+                print "if (typeof(Hatena.Emoji) == \x27undefined\x27) Hatena.Emoji = {};\n"; \
+                print "if (typeof(Hatena.Emoji.Palette) == \x27undefined\x27) Hatena.Emoji.Palette = {};\n\n"; \
+                print "Hatena.Emoji.Palette.Data = "; \
+                print JSON::XS->new->utf8->allow_blessed->convert_blessed->allow_nonref->pretty->canonical->encode($$palette); #\
+                print ";"; #\
+            ' $< > $@

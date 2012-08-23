@@ -1,3 +1,6 @@
 [submodule "modules/jsdeferred"]
 	path = modules/jsdeferred
 	url = git://github.com/cho45/jsdeferred.git
+[submodule "modules/hatena-emoji-data"]
+	path = modules/hatena-emoji-data
+	url = git://github.com/wakaba/hatena-emoji-data.git
