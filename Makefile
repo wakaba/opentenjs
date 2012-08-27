@@ -2,7 +2,7 @@ WGET = wget
 PERL = perl
 
 all: \
-  scripts/Ten.js scripts/ten-extras.js \
+  scripts/Ten.js scripts/ten-extras.js scripts/locale-all.js \
   scripts/HatenaStar.jp.js scripts/HatenaStar.com.js \
   src/Hatena/Emoji/Palette/Data.js
 
@@ -91,6 +91,11 @@ scripts/ten-extras.js: \
 	cat src/Ten/Extras/OnLoad.js >> $@
 	cat src/Ten/Extras/License.js >> $@
 
+scripts/locale-all.js: src/Hatena/Locale.js Makefile
+	echo "/* Not the original file!  Don't edit! */" > $@
+	echo "" >> $@
+	cat $< >> $@
+
 scripts/HatenaStar.jp.js: \
     scripts/Ten.js src/Ten/SubWindow.js src/Ten/Highlight.js \
     src/Hatena.js src/Hatena/Star/HatenaStar.base.js \
@@ -104,11 +109,13 @@ scripts/HatenaStar.com.js: \
 	cat $^ > $@
 
 src/Hatena/Emoji/Palette/Data.js: \
-  modules/hatena-emoji-data/collections/hatena.json Makefile
-	$(PERL) -MJSON::XS \
-            -e 'open $$file, "<", shift; #\
+  modules/hatena-emoji-data/collections/hatena.json Makefile JSONPP.pm
+	$(PERL) \
+            -e ' #\
+	        require "JSONPP.pm"; #\
+	        open $$file, "<", shift; #\
 	        local $$/ = undef; #\
-	        $$data = JSON::XS->new->utf8->decode(scalar <$$file>); #\
+	        $$data = JSON::PP->new->utf8->decode(scalar <$$file>); #\
                 $$palette = { #\
                     DS => $$data->{hatena_ds}, #\
                     KEITAI_1 => $$data->{hatena_keitai_1}, #\
@@ -119,6 +126,9 @@ src/Hatena/Emoji/Palette/Data.js: \
                 print "if (typeof(Hatena.Emoji) == \x27undefined\x27) Hatena.Emoji = {};\n"; \
                 print "if (typeof(Hatena.Emoji.Palette) == \x27undefined\x27) Hatena.Emoji.Palette = {};\n\n"; \
                 print "Hatena.Emoji.Palette.Data = "; \
-                print JSON::XS->new->utf8->allow_blessed->convert_blessed->allow_nonref->pretty->canonical->encode($$palette); #\
+                print JSON::PP->new->utf8->allow_blessed->convert_blessed->allow_nonref->pretty->canonical->encode($$palette); #\
                 print ";"; #\
             ' $< > $@
+
+JSONPP.pm:
+	$(WGET) -O $@ http://cpansearch.perl.org/src/MAKAMAKA/JSON-PP-2.27200/lib/JSON/PP.pm
