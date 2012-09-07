@@ -33,11 +33,11 @@ div.error {
 JSAN.use('Test.Simple');
 plan({tests: 10});
 var v = Ten.Style.getGlobalStyle('.style-test', 'margin');
-ok (v == '5px 5px 5px 5px');
+ok (v == '5px');
 v = Ten.Style.getGlobalStyle('div.style-test', 'margin');
-ok (v == '5px 3px 5px 3px');
+ok (v == '5px 3px');
 v = Ten.Style.getGlobalStyle('div.style-test', 'padding');
-ok (v == '1em 1em 1em 1em');
+ok (v == '1em');
 
 v = Ten.Style.getGlobalStyle('.hatena-star-add-button-image', 'backgroundImage');
 ok (v == 'url(http://s.hatena.com/images/add.gif)');
@@ -45,9 +45,9 @@ var url = Ten.Style.scrapeURL(v);
 ok (url == 'http://s.hatena.com/images/add.gif');
 
 v = Ten.Style.getGlobalStyle('.hatena-star-comment-button-image', 'backgroundImage');
-ok (v == 'url(/images/comment.gif)');
+ok (v.match(/url\(.+?\/images\/comment.gif\)/));
 url = Ten.Style.scrapeURL(v);
-ok (url == '/images/comment.gif');
+ok (url.match(/\/images\/comment.gif$/));
 
 v = Ten.Style.getGlobalStyle('.undefined', 'backgroundImage');
 ok (v == null);
@@ -59,7 +59,7 @@ ok (style, 'div bgcolor');
 
 elem = elem.getElementsByTagName('p')[0];
 style = Ten.Style.getElementStyle(elem,'backgroundColor');
-ok (style == 'transparent', 'p bgcolor');
+ok (style == 'rgba(0, 0, 0, 0)', 'p bgcolor');
 </script></pre>
 
 <div class="pod">

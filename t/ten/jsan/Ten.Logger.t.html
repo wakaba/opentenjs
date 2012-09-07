@@ -36,6 +36,10 @@ with ({ logger: new Ten.Logger() }) {
     logger.info('fuga');
 }
 
+new Ten.Observer(window, 'onload', function () {
+    document.getElementById('test').appendChild(document.createTextNode("1..1\nok 1\n"));
+});
+
 </script></pre>
 
 <div class="pod">

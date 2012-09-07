@@ -124,32 +124,32 @@ var CommentButton = new Ten.Class({
 });
 
 new Ten.Observer(window, 'onload', function() {
-    // new JSAN('lib').use('Test.More');
-    // plan({tests: 8});
+    new JSAN('lib').use('Test.More');
+    plan({tests: 8});
 
     var sw = new Ten.SubWindow;
-    // ok (sw, 'SubWindow');
+    ok (sw, 'SubWindow');
     sw.container.innerHTML = 'Hello world';
     new Ten.Observer($('sw1'), 'onclick', sw, 'show');
 
     var mb = new MyButton('sw2', MyWindow);
-    // ok (mb, 'my button');
+    ok (mb, 'my button');
     var mb2 = new MyButton('sw3', MyWindow);
-    // ok (mb2, 'my button2');
+    ok (mb2, 'my button2');
     var mb3 = new MyButton('sw4', SolidWindow);
-    // ok (mb3, 'solid window');
+    ok (mb3, 'solid window');
     var mb4 = new MyButton('sw5', MyWindow2);
 
     var s1 = new Star('s1', 'jkondo');
     var s2 = new Star('s2', 'reikon');
     var s3 = new Star('s3', 'cinnamon');
 
-    // ok (s1.window, 'star1');
-    // ok (s2.window, 'star2');
-    // ok (s3.window, 'star3');
+    ok (s1.window, 'star1');
+    ok (s2.window, 'star2');
+    ok (s3.window, 'star3');
 
     var cm = new CommentButton;
-    // ok (cm, 'comment');
+    ok (cm, 'comment');
 });
 </script></pre>
 

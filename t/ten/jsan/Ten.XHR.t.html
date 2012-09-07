@@ -9,7 +9,7 @@
 <body>
 <pre id="test"><script>
 new JSAN('lib').use('Test.More');
-plan({tests: 12});
+plan({tests: 14});
 
 var uri = "";
 is(Ten.XHR.isSafeUri(uri), false);
@@ -67,9 +67,9 @@ Ten.EventDispatcher.implementEventDispatcher(parallelLoader);
 parallelLoader.addEventListener('complete', function() {
     ok('2');
 });
-parallelLoader('./', './Ten.XHR.t.html');
+parallelLoader('./Ten.XHR.t.html', './Ten.XHR.t.html');
 
-new Ten.XHR('./', {}, function(req) {
+new Ten.XHR('./Ten.XHR.t.html', {}, function(req) {
     if (req && req.responseText.length > 1) {
         ok('3');
     } else {
@@ -87,8 +87,8 @@ var obj = {
     }
 };
 
-new Ten.XHR('./', {}, obj, 'callbackMethod');
-new Ten.XHR('./', {method: 'POST'}, obj, 'callbackMethod');
+new Ten.XHR('./Ten.XHR.t.html', {}, obj, 'callbackMethod');
+new Ten.XHR('./Ten.XHR.t.html', {method: 'POST'}, obj, 'callbackMethod');
 </script></pre>
 
 <div class="pod">

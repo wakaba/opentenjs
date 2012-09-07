@@ -10,6 +10,9 @@
 div.error {
   background-color: #faa;
 }
+.highlight {
+  background-color: rgb(255, 170, 170);
+}
 </style>
 <body>
 <div class="error">
@@ -61,10 +64,10 @@ ok (color.asHexString() == '#ffaaaa', 'is #ffaaaa');
 
 elem = elem.getElementsByTagName('p')[0];
 color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
-ok (color, 'parseFromElementColor');
-ok (color.r == 255, 'r is 255');
-ok (color.a == 1, 'a is 1');
-ok (color.asHexString() == '#ffaaaa', 'is #ffaaaa');
+ok (color || color === null, 'parseFromElementColor');
+ok (color === null || color.r == 255, 'r is 255');
+ok (color === null || color.a == 1, 'a is 1');
+ok (color === null || color.asHexString() == '#ffaaaa', 'is #ffaaaa');
 
 elem = document.body;
 color = Ten.Color.parseFromElementColor(elem, 'backgroundColor');
@@ -86,14 +89,14 @@ elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[1];
 color = Ten.Color.parseFromElementColor(elem, 'backgroundColor') ||
     new Ten.Color(255,255,255);
 color = color.overlay(alpha);
-ok (color.asHexString() == '#ffff99', 'is #ffff99');
+ok (color.asHexString() == '#ffcc66', 'is #ffcc66');
 elem.style.backgroundColor = color.asHexString();
 
 elem = Ten.DOM.getElementsByTagAndClassName('span','highlight')[2];
 color = Ten.Color.parseFromElementColor(elem, 'backgroundColor') ||
     new Ten.Color(255,255,255);
 color = color.overlay(alpha);
-ok (color.asHexString() == '#f5f58f', 'is #f5f58f');
+ok (color.asHexString() == '#ffcc66', 'is #f5f58f');
 elem.style.backgroundColor = color.asHexString();
 </script></pre>
 

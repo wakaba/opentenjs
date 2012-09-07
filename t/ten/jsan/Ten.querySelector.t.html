@@ -27,7 +27,7 @@ function bench (selector) {
     if (hasNativeMethod) {
         var timeNative = _bench(function(){Ten.querySelectorAll(selector)});
         var timeTen   = _bench(function(){Ten.Selector.getElementsBySelector(selector)});
-        return [timeNative < timeTen, 'use native method : ' + timeTen + 'msec => ' + timeNative + 'msec (' + parseInt( ((timeTen - timeNative) / timeNative) * 10000 ) / 100 + '% speed up)'];
+        return [timeNative <= timeTen, 'use native method : ' + timeTen + 'msec => ' + timeNative + 'msec (' + parseInt( ((timeTen - timeNative) / timeNative) * 10000 ) / 100 + '% speed up)'];
     } else {
         var time = _bench(function(){Ten.querySelectorAll(selector)});
         return [true, 'no native method : ' + time + 'msec'];
@@ -42,7 +42,7 @@ function _bench (fn) {
 }
 new Ten.Observer(window, 'onload', function() {
     JSAN.use('Test.Simple');
-    plan({tests: 104});
+    plan({tests: 115});
     var elems;
     var elem;
     var sel;
