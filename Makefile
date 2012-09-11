@@ -166,6 +166,7 @@ local-phantomjs: %: Makefile-setupenv
 
 git-submodules:
 	$(GIT) submodule update --init
+	cd t_deps/modules/Wight && ln -s poltergeist/lib/capybara/poltergeist/client/compiled/ share
 
 PROVE = prove
 PERL_ENV = PATH="$(abspath ./local/perl-$(PERL_VERSION)/pm/bin):$(PERL_PATH):$(PATH)" PERL5LIB="$(shell cat config/perl/libs.txt)"
