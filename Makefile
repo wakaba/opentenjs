@@ -6,6 +6,8 @@ all: \
   scripts/HatenaStar.jp.js scripts/HatenaStar.com.js \
   src/Hatena/Emoji/Palette/Data.js
 
+# ------ Generation of scripts ------
+
 scripts/Ten.js: src/Ten.base.js src/Ten/Deferred.js Makefile
 	$(PERL) -n -e 's{\Q/*include Ten.Deferred*/\E}{open my $$file, "<", "src/Ten/Deferred.js"; local $$/ = undef; <$$file>}ge; print' < $< > $@
 
@@ -132,3 +134,44 @@ src/Hatena/Emoji/Palette/Data.js: \
 
 JSONPP.pm:
 	$(WGET) -O $@ http://cpansearch.perl.org/src/MAKAMAKA/JSON-PP-2.27200/lib/JSON/PP.pm
+
+# ------ Tests ------
+
+WGET = wget
+PERL = perl
+GIT = git
+PERL_VERSION = latest
+PERL_PATH = $(abspath local/perlbrew/perls/perl-$(PERL_VERSION)/bin)
+REMOTEDEV_HOST = remotedev.host.example
+REMOTEDEV_PERL_VERSION = $(PERL_VERSION)
+
+PMB_PMTAR_REPO_URL =
+PMB_PMPP_REPO_URL = 
+
+Makefile-setupenv: Makefile.setupenv
+	$(MAKE) --makefile Makefile.setupenv setupenv-update \
+	    SETUPENV_MIN_REVISION=20120338
+
+Makefile.setupenv:
+	$(WGET) -O $@ https://raw.github.com/wakaba/perl-setupenv/master/Makefile.setupenv
+
+lperl lprove lplackup local-perl perl-version perl-exec \
+local-submodules pmb-install pmb-update \
+local-phantomjs: %: Makefile-setupenv
+	$(MAKE) --makefile Makefile.setupenv $@ \
+            REMOTEDEV_HOST=$(REMOTEDEV_HOST) \
+            REMOTEDEV_PERL_VERSION=$(REMOTEDEV_PERL_VERSION) \
+	    PMB_PMTAR_REPO_URL=$(PMB_PMTAR_REPO_URL) \
+	    PMB_PMPP_REPO_URL=$(PMB_PMPP_REPO_URL)
+
+PROVE = prove
+PERL_ENV = PATH="$(abspath ./local/perl-$(PERL_VERSION)/pm/bin):$(PERL_PATH):$(PATH)" PERL5LIB="$(shell cat config/perl/libs.txt)"
+
+test: test-deps test-main
+
+test-deps: local-phantomjs pmb-install
+
+test-main:
+	$(PERL_ENV) $(PERL) t_deps/bin/generate_ts.pl
+	$(PERL_ENV) TEST_PHANTOMJS="$(abspath local/phantomjs/bin/phantomjs)" \
+	$(PROVE) t/tap-perl/*.t
