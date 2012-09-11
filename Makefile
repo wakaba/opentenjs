@@ -166,6 +166,7 @@ local-phantomjs: %: Makefile-setupenv
 
 git-submodules:
 	$(GIT) submodule update --init
+	cd t_deps/modules/Wight && $(GIT) submodule update --init
 	-cd t_deps/modules/Wight && ln -s poltergeist/lib/capybara/poltergeist/client/compiled/ share
 
 PROVE = prove
