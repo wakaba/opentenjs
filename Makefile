@@ -164,12 +164,15 @@ local-phantomjs: %: Makefile-setupenv
 	    PMB_PMTAR_REPO_URL=$(PMB_PMTAR_REPO_URL) \
 	    PMB_PMPP_REPO_URL=$(PMB_PMPP_REPO_URL)
 
+git-submodules:
+	$(GIT) submodule update --init
+
 PROVE = prove
 PERL_ENV = PATH="$(abspath ./local/perl-$(PERL_VERSION)/pm/bin):$(PERL_PATH):$(PATH)" PERL5LIB="$(shell cat config/perl/libs.txt)"
 
 test: test-deps test-main
 
-test-deps: local-phantomjs pmb-install
+test-deps: git-submodules local-phantomjs pmb-install
 
 test-main:
 	$(PERL_ENV) $(PERL) t_deps/bin/generate_ts.pl
