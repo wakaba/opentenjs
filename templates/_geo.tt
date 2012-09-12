@@ -1,0 +1,43 @@
+[%- FILTER null -%]
+
+[%~ BLOCK geo_link # v, script ~%]
+  [%~ accesskey = (!v.accesskey || v.accesskey != 'none') ? ' accesskey="5"' : '' ~%]
+  [%~ IF r.req.browser.is_ezweb ~%]
+    [%~ # geo_get_url の中に ? があっても ?ver=1 みたいにつなげた URL
+        # が送られてくるので注意。 ? が入ってると端末によっては取得に
+        # 失敗するみたいなので、そもそも ? 入りの URL は使うべきではない。 ~%]
+    [%~~%]<a [% accesskey %] href="device:[%~ IF v.lite ~%]location[%~ ELSE ~%]gpsone[%~ END ~%]?url=[%- v.geo_get_url.replace('%', '%25').replace('&', '%26').replace('\?', '%3F').replace('=', '%3D').replace(';', '%3B') | html -%]&amp;ver=1&amp;datum=0&amp;unit=0">[%- content -%]</a>
+  [%~ ELSIF r.req.browser.is_docomo ~%]
+    [%~ IF v.lite ~%]
+      [%~ # サービス内にiエリア対応ですと書かないといけないらしいので注意 ~%]
+      [%~ # query parameter は基本的に使えない。渡す方法はないわけではない
+          # けど面倒くさい。 ~%]
+      [%~ # <http://www.nttdocomo.co.jp/service/imode/make/content/iarea/domestic/index.html> ~%]
+      [%~~%]<a [% accesskey %] href="http://w1m.docomo.ne.jp/cp/iarea?ecode=OPENAREACODE&amp;msn=OPENAREAKEY&amp;nl=[%- v.geo_get_url.replace('%', '%25').replace('&', '%26').replace('\?', '%3F').replace('=', '%3D').replace(';', '%3B')| html -%]&amp;posinfo=2">[%- content -%]</a>
+    [%~ ELSE # v.lite ~%]
+      [%~~%]<a [% accesskey %] href="[%- v.geo_get_url | html -%]" lcs>[%- content -%]</a>
+    [%~ END # v.lite ~%]
+  [%~ ELSIF r.req.browser.is_softbank ~%]
+    [%~~%]<a [% accesskey %] href="location:[%~ IF v.lite ~%]cell[%~ ELSE ~%]auto[%~ END ~%]?url=[%- v.geo_get_url.replace('\?', '&') | html -%]">[%- content -%]</a>
+  [%~ ELSIF r.req.browser.is_airh_phone # WILLCOM ~%]
+    [%~ # query parameter には未対応 ~%]
+    [%~~%]<a [% accesskey %] href="http://location.request/dummy.cgi?my=[%- v.geo_get_url.replace('\?', '&') | html -%]&amp;pos=$location">[%- content -%]</a>
+  [%~ ELSE # browser ~%]
+    [%- id = script.anchor_id || 'hereLink' -%]
+    [%~~%]<a [% accesskey %] href="[%- v.location_get_url | html -%]" id="[%~ id ~%]"
+      data-action="[%- v.geo_post_url | html -%]"
+      data-oncancel="[%~ script.oncancel_code | html ~%]"
+      [% script.data_attrs %]
+    >[%- content -%]</a>
+    <script src="[%~ script.ten_geo_url || '/js/updu/ten-geo.js' | html ~%]" charset=utf-8></script>
+    <script>
+      (function () {
+        var a = document.getElementById('[%- id | html # ほんとは |js -%]');
+        Ten.Geo.prepareGeoLink(a, {[%- script.prepare_args -%]});
+        [%- script.init_code -%]
+      })();
+    </script>
+  [%~ END # browser ~%]
+[%~ END # geo_link ~%]
+
+[%- END # FILTER null -%]
