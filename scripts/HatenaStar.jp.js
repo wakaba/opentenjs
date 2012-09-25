@@ -2284,9 +2284,7 @@ Hatena.Star.User = new Ten.Class({
                 if ( location.protocol == 'https:' ) {
                     img.src = 'https://www.hatena.com/users/' + pp;
                 } else {
-                    var n = 0;
-                    for ( var i = 0; i < name.length; i++ ) { n += name.charCodeAt(i) }
-                    img.src = 'http://cdn' + (n % 5) + '.www.st-hatena.com/users/' + pp;
+                    img.src = 'http://cdn1.www.st-hatena.com/users/' + pp;
                 }
             } else {
                 img.src = 'http://n.hatena.com/' + name + '/profile/image?size=16&type=' + encodeURIComponent(this.profileIconType);
