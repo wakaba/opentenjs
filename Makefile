@@ -2,9 +2,13 @@ WGET = wget
 PERL = perl
 
 all: \
+  git-submodules \
   scripts/Ten.js scripts/ten-extras.js scripts/locale-all.js \
   scripts/HatenaStar.jp.js scripts/HatenaStar.com.js \
   src/Hatena/Emoji/Palette/Data.js
+
+git-submodules:
+	git submodule update --init
 
 # ------ Generation of scripts ------
 
