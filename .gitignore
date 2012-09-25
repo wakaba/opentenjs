@@ -1,1 +1,8 @@
 *~
+/t/tap-perl/
+/local/
+/perl
+/prove
+/Makefile.setupenv
+/config/perl/libs.txt
+/config/perl/modules.txt
