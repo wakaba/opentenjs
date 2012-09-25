@@ -4354,6 +4354,7 @@ Hatena.Star.EntryLoader = new Ten.Class({
         e.uri = a.href;
         if (!e.uri) return null;
         var title = c.getElementByConfigSelector(selectors.title, enode);
+        if (!title) return null;
         if (typeof(title) == 'string') {
             e.title = title;
         } else {
