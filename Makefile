@@ -176,7 +176,13 @@ test: test-deps test-main
 
 test-deps: git-submodules local-phantomjs pmb-install
 
+test-deps-travis: git-submodules pmb-install
+
 test-main:
 	$(PERL_ENV) $(PERL) t_deps/bin/generate_ts.pl
 	$(PERL_ENV) TEST_PHANTOMJS="$(abspath local/phantomjs/bin/phantomjs)" \
 	$(PROVE) t/tap-perl/*.t
+
+test-main-travis:
+	$(PERL_ENV) $(PERL) t_deps/bin/generate_ts.pl
+	$(PERL_ENV) $(PROVE) t/tap-perl/*.t
