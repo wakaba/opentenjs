@@ -50,6 +50,9 @@ sub extract_tap_result ($) {
         BAIL_OUT($test_url . ': Page error');
     };
 
+    my $wait = $wight->evaluate(q{document.documentElement.getAttribute('data-test-wait')});
+    sleep $wait if $wait;
+
     sleep 3 if $file_name =~ /JSONP/;
 
     my $tap;

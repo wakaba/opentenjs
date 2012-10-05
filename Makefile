@@ -189,4 +189,4 @@ test-main:
 
 test-main-travis:
 	$(PERL_ENV) $(PERL) t_deps/bin/generate_ts.pl
-	$(PERL_ENV) $(PROVE) t/tap-perl/*.t
+	$(PERL_ENV) $(PROVE) t/tap-perl/*.t t/hatenastar/*.t.html
