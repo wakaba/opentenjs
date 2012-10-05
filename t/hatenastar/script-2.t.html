@@ -1,0 +1,47 @@
+<!DOCTYPE html><!--$dummy;# -*- perl -*- >
+use strict;
+use warnings;
+use Path::Class;
+require(file(__FILE__)->dir->parent->parent->subdir('t_deps', 'lib')->file('taptest.pl'));
+extract_tap_result(file(__FILE__));
+
+__DATA__
+
+-->
+<html data-test-wait=6>
+<title>HatenaStar.js</title>
+
+<script>
+  var Hatena = {};
+  Hatena.Star = {};
+  Hatena.Star.SiteConfig = {
+    entryNodes: {
+      '.star': {
+        uri: 'a.star-url',
+        title: 'a.star-url',
+        container: 'span.hatena-star'
+      }
+    }
+  };
+</script>
+<script src="../../scripts/HatenaStar.com.js"></script>
+
+<article>
+  <h1 class=star>
+    <a href="http://www.hatena.com/" class=star-url>Hatena</a>
+    (<span class=hatena-star></span>)
+  </h1>
+</article>
+
+<pre id=test>1..2
+</pre>
+
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var tap = document.getElementById('test');
+      if (Hatena.Star.Star) tap.textContent += "ok 1\n";
+      if (document.querySelector('.hatena-star img')) tap.textContent += "ok 2\n";
+    }, 5000);
+  }, false);
+</script>
