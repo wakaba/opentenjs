@@ -182,7 +182,7 @@ Hatena.Star.Entry = new Ten.Class({
         this.stars = [];
         this.colored_stars = [];
         this.comments = [];
-        this.starEntry = null;
+        this._hasBoundToStarEntry = false;
     },
     maxStarCount: 11
 },{
@@ -190,14 +190,17 @@ Hatena.Star.Entry = new Ten.Class({
         this.stars = [];
         this.star_container.innerHTML = '';
     },
+    hasBoundToStarEntry: function () {
+        return this._hasBoundToStarEntry;
+    },
     bindStarEntry: function(se) {
-        this.starEntry = se;
+        this._hasBoundToStarEntry = true;
         if (se.colored_stars) {
             var colored_star_hash = {};
             for (var i = 0, len = se.colored_stars.length; i < len ; i++){
                 colored_star_hash[se.colored_stars[i].color] = se.colored_stars[i].stars;
             }
-            var cs = "purple,blue,red,green".split(',');
+            var cs = [ "purple", "blue", "red", "green" ];
             for (var i = 0, len = cs.length; i < len ; i++){
                 var csh = colored_star_hash[cs[i]];
                 if (csh) this.pushStars(csh,cs[i]);
@@ -1901,7 +1904,7 @@ Hatena.Star.CommentScreen = new Ten.Class({
         for (var i=0; i<comments.length; i++) {
             cc.appendChild(comments[i].asElement());
         }
-        if (e.starEntry && !e.can_comment) {
+        if ( e.hasBoundToStarEntry() && !e.can_comment ) {
             this.hideCommentForm();
         } else {
             this.addCommentForm();
@@ -2216,19 +2219,22 @@ Hatena.Star.EntryLoader = new Ten.Class({
     receiveStarEntries: function(res) {
         var c = Hatena.Star.EntryLoader;
         var entries = res.entries;
+        var encodedUriToEntryInfoMap = {};
         if (!entries) entries = [];
-        for (var i = 0, cLen = c.entries.length ; i < cLen ; i++) {
+        for ( var i = 0, len = entries.length; i < len; ++i ) {
+            var entryInfo = entries[i];
+            if ( !entryInfo.uri ) continue;
+            var eURI = entryInfo.eURI;
+            if ( !eURI ) eURI = entryInfo.eURI = encodeURIComponent( entryInfo.uri );
+            encodedUriToEntryInfoMap[eURI] = entryInfo;
+        }
+        for ( var i = 0, len = c.entries.length; i < len; ++i ) {
             var e = c.entries[i];
-            if (e.starEntry) continue;
-            if (!e.eURI) e.eURI = encodeURIComponent(e.uri);
-            for (var j = 0, eLen = entries.length ; j < eLen ; j++) {
-                var se = entries[j];
-                if (!se.uri) continue;
-                if ((se.eURI || (se.eURI = encodeURIComponent(se.uri))) == e.eURI) {
-                    e.bindStarEntry(se);
-                    entries.splice(j,1);
-                    break;
-                }
+            var entryInfo;
+            if ( e.hasBoundToStarEntry() ) continue;
+            if ( !e.eURI ) e.eURI = encodeURIComponent(e.uri);
+            if ( entryInfo = encodedUriToEntryInfoMap[e.eURI] ) {
+                e.bindStarEntry( entryInfo );
             }
             if (typeof(e.can_comment) == 'undefined') {
                 e.setCanComment(res.can_comment);
