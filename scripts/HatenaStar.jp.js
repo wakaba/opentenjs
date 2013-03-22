@@ -85,6 +85,26 @@ Ten.Array = {
     isArray: function(o) {
         return (o instanceof Array ||
                 (o && typeof(o.length) === 'number' && typeof(o) != 'string' && !o.nodeType));
+    },
+    find: function (arr, cond) {
+        var code = (cond instanceof Function) ? cond : function (v) {
+            return v == cond;
+        };
+        var arrL = arr.length;
+        for (var i = 0; i < arrL; i++) {
+            if (code(arr[i])) {
+                return arr[i];
+            }
+        }
+        return undefined; // not null
+    },
+    forEach: function (arraylike, code) {
+        var length = arraylike.length;
+        for (var i = 0; i < length; i++) {
+            var r = code(arraylike[i]);
+            if (r && r.stop) return r.returnValue;
+        }
+        return null;
     }
 };
 
@@ -519,6 +539,60 @@ Ten.DOM = new Ten.Class({
         }
         return null;
     },
+    firstElementChild: function (node) {
+        var el = node.firstElementChild || node.firstChild;
+        while (el && el.nodeType != 1) {
+            el = el.nextSibling;
+        }
+        return el;
+    },
+    getElementSetByClassNames: function (map, container) {
+        var elements = {root: []};
+
+        if (map.root) {
+            if (map.root instanceof Array) {
+                elements.root = map.root;
+            } else {
+                if (Ten.DOM.hasClassName(container, map.root)) {
+                    elements.root = [container];
+                } else {
+                    elements.root = Ten.DOM.getElementsByClassName(map.root, container);
+                }
+            }
+            delete map.root;
+        }
+
+        var root = elements.root[0] || container || document.body || document.documentElement || document;
+        for (var n in map) {
+            if (map[n] instanceof Array) {
+                elements[n] = map[n];
+            } else if (map[n]) {
+                elements[n] = Ten.DOM.getElementsByClassName(map[n], root);
+            }
+        }
+
+        return elements;
+    },
+    getAncestorByClassName: function (className, node) {
+        while (node != null) {
+            node = node.parentNode;
+            if (Ten.DOM.hasClassName(node, className)) {
+                return node;
+            }
+        }
+        return null;
+    },
+    someParentNode: function(el, func) {
+        if (el.parentNode) {
+            if (func(el.parentNode)) {
+                return true;
+            } else {
+                return Ten.DOM.someParentNode(el.parentNode, func);
+            }
+        } else {
+            return false;
+        }
+    },
     insertBefore: function(node, ref) {
         ref.parentNode.insertBefore(node, ref);
     },
@@ -578,6 +652,17 @@ Ten.DOM = new Ten.Class({
             return document.selection.createRange().text;
         else
             return '';
+    },
+    clearSelection: function() {
+        if (window.getSelection) {
+            window.getSelection().collapse(document.body, 0);
+        } else if (document.getSelection) {
+            document.getSelection().collapse(document.body, 0);
+        } else {
+            var selection = document.selection.createRange();
+            selection.setEndPoint("EndToStart", selection);
+            selection.select();
+        }
     },
     show: function(elem) {
         elem.style.display = 'block';
@@ -1422,6 +1507,7 @@ Ten.Browser = {
     isIE7 : navigator.userAgent.indexOf('MSIE 7.') != -1,
     isIE8 : navigator.userAgent.indexOf('MSIE 8.') != -1,
     isIE9 : navigator.userAgent.indexOf('MSIE 9.') != -1,
+    geIE10 : /MSIE [0-9]{2,}\./.test(navigator.userAgent),
     /* Gecko */
     isMozilla: navigator.userAgent.indexOf('Mozilla') != -1 && !/compatible|WebKit/.test(navigator.userAgent),
     /* Presto */
@@ -1432,24 +1518,33 @@ Ten.Browser = {
     isFirefox : navigator.userAgent.indexOf('Firefox/') != -1,
     isDSi : navigator.userAgent.indexOf('Nintendo DSi') != -1,
     is3DS : navigator.userAgent.indexOf('Nintendo 3DS') != -1,
-    isWii : navigator.userAgent.indexOf('Nintendo Wii') != -1,
-    isAndroid : navigator.userAgent.indexOf('Android') != -1,
+    isWii : navigator.userAgent.indexOf('Nintendo Wii') != -1 && !navigator.userAgent.indexOf('Nintendo WiiU'),
+    isWiiU: navigator.userAgent.indexOf('Nintendo WiiU'),
+    /* Android smartphones */
+    isAndroid : navigator.userAgent.indexOf('Android') != -1 && navigator.userAgent.indexOf('Mobile') != -1,
+    /* iPhone and iPod touch */
     isIPhone : (navigator.userAgent.indexOf('iPod;') != -1 || navigator.userAgent.indexOf('iPhone;') != -1 || navigator.userAgent.indexOf('iPhone Simulator;') != -1),
     isIPad : navigator.userAgent.indexOf('iPad') != -1,
     isBB: navigator.userAgent.indexOf('BlackBerry') == 0,
     isWM: navigator.userAgent.indexOf('IEMobile') != -1 || navigator.userAgent.indexOf('Windows Phone') != -1,
     isOSX: navigator.userAgent.indexOf('OS X ') != -1,
     isSupportsXPath : !!document.evaluate,
+    noQuirks: document.compatMode == 'CSS1Compat',
     version: {
         string: (/(?:Firefox\/|MSIE |Opera\/|Chrome\/|Version\/)([\d.]+)/.exec(navigator.userAgent) || []).pop(),
         valueOf: function() { return parseFloat(this.string) },
         toString: function() { return this.string }
     }
 };
+/* Touch small devices */
 Ten.Browser.isTouch = Ten.Browser.isIPhone || Ten.Browser.isAndroid || Ten.Browser.isDSi || Ten.Browser.is3DS;
 Ten.Browser.isSmartPhone = Ten.Browser.isIPhone || Ten.Browser.isAndroid;
+Ten.Browser.leIE7 = Ten.Browser.isIE6 || Ten.Browser.isIE7;
 
 if (!Ten.Browser.isIE) Ten.JSONP.MaxBytes = 7000;
+
+if (!Ten.Browser.CSS) Ten.Browser.CSS = {};
+Ten.Browser.CSS.noFixed = Ten.Browser.isIE6 || (Ten.Browser.isIE && !Ten.Browser.noQuirks);
 
 Ten.Event.onKeyDown = ((Ten.Browser.isFirefox && Ten.Browser.isOSX) || Ten.Browser.isOpera) ? 'onkeypress' : 'onkeydown';
 

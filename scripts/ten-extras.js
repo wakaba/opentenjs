@@ -1,22 +1,5 @@
 /* Not the original file!  Don't edit! */
 
-Ten.Browser.isIE6 = navigator.userAgent.indexOf('MSIE 6.') != -1;
-Ten.Browser.isIE7 = navigator.userAgent.indexOf('MSIE 7.') != -1;
-Ten.Browser.leIE7 = Ten.Browser.isIE6 || Ten.Browser.isIE7;
-Ten.Browser.isDSi = navigator.userAgent.indexOf('Nintendo DSi') != -1;
-Ten.Browser.is3DS = navigator.userAgent.indexOf('Nintendo 3DS') != -1;
-
-Ten.Browser.noQuirks = document.compatMode == 'CSS1Compat';
-if (!Ten.Browser.CSS) Ten.Browser.CSS = {};
-Ten.Browser.CSS.noFixed = Ten.Browser.isIE6 || (Ten.Browser.isIE && !Ten.Browser.noQuirks);
-Ten.DOM.firstElementChild = function (node) {
-  var el = node.firstElementChild || node.firstChild;
-  while (el && el.nodeType != 1) {
-    el = el.nextSibling;
-  }
-  return el;
-};
-
 /*
   structure = [
     {key: 'root', className: 'container', descendants: [
@@ -91,68 +74,6 @@ Ten.DOM.getElementsByStructure = function (root, structure) {
   }
 
   return result;
-};
-
-Ten.DOM.getElementSetByClassNames = function (map, container) {
-  var elements = {root: []};
-
-  if (map.root) {
-    if (map.root instanceof Array) {
-      elements.root = map.root;
-    } else {
-      if (Ten.DOM.hasClassName(container, map.root)) {
-        elements.root = [container];
-      } else {
-        elements.root = Ten.DOM.getElementsByClassName(map.root, container);
-      }
-    }
-    delete map.root;
-  }
-
-  var root = elements.root[0] || container || document.body || document.documentElement || document;
-  for (var n in map) {
-    if (map[n] instanceof Array) {
-      elements[n] = map[n];
-    } else if (map[n]) {
-      elements[n] = Ten.DOM.getElementsByClassName(map[n], root);
-    }
-  }
-
-  return elements;
-};
-
-Ten.DOM.getAncestorByClassName = function (className, node) {
-  while (node != null) {
-    node = node.parentNode;
-    if (Ten.DOM.hasClassName(node, className)) {
-      return node;
-    }
-  }
-  return null;
-};
-
-Ten.DOM.someParentNode = function(el, func) {
-  if (el.parentNode) {
-    if (func(el.parentNode)) {
-      return true;
-    } else {
-      return Ten.DOM.someParentNode(el.parentNode, func);
-    }
-  } else {
-    return false;
-  }
-};
-
-Ten.DOM.clearSelection = function() {
-  if (window.getSelection) {
-    window.getSelection().collapse(document.body, 0);
-  } else if (document.getSelection) {
-    document.getSelection().collapse(document.body, 0);
-  } else {
-    var selection = document.selection.createRange();
-    selection.setEndPoint("EndToStart", selection);
-    selection.select();
-  }
 };
 /*
     http://www.JSON.org/json2.js
@@ -3251,28 +3172,7 @@ if (window.postMessage && !window.tenNoPostMessage && window.addEventListener) {
 
 Ten.XDMessenger = Messenger;
 
-})();Ten.Array.find = function (arr, cond) {
-  var code = (cond instanceof Function) ? cond : function (v) {
-    return v == cond;
-  };
-  var arrL = arr.length;
-  for (var i = 0; i < arrL; i++) {
-    if (code(arr[i])) {
-      return arr[i];
-    }
-  }
-  return undefined; // not null
-};
-
-Ten.Array.forEach = function (arraylike, code) {
-  var length = arraylike.length;
-  for (var i = 0; i < length; i++) {
-    var r = code(arraylike[i]);
-    if (r && r.stop) return r.returnValue;
-  }
-  return null;
-};
-Ten.AsyncLoader = new Ten.Class({
+})();Ten.AsyncLoader = new Ten.Class({
 
   /* ------ Asynchronous communication ------ */
 
