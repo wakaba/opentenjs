@@ -2183,6 +2183,8 @@ Hatena.Star.EntryLoader = new Ten.Class({
             result = window.location;
         } else if (selector == 'parent') {
             result = parent;
+        } else if (selector.match(/^link\[rel~?="?canonical"?\]$/)) {
+            result = Ten.querySelector(selector);
         } else {
             result = Ten.Selector.getElementsBySelector(selector,parent)[0];
         }
