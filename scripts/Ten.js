@@ -1415,15 +1415,18 @@ Ten.Logger = new Ten.Class({
     }
 });
 
-/* Ten.Browser */
+/* DEPRECATED: Ten.Browser */
 Ten.Browser = {
     isIE: navigator.userAgent.indexOf('MSIE') != -1,
     isIE6 : navigator.userAgent.indexOf('MSIE 6.') != -1,
     isIE7 : navigator.userAgent.indexOf('MSIE 7.') != -1,
     isIE8 : navigator.userAgent.indexOf('MSIE 8.') != -1,
     isIE9 : navigator.userAgent.indexOf('MSIE 9.') != -1,
+    /* Gecko */
     isMozilla: navigator.userAgent.indexOf('Mozilla') != -1 && !/compatible|WebKit/.test(navigator.userAgent),
+    /* Presto */
     isOpera: !!window.opera,
+    isWebKit: navigator.userAgent.indexOf('WebKit') != -1,
     isSafari: navigator.userAgent.indexOf('WebKit') != -1 && navigator.userAgent.indexOf('Chrome/') == -1,
     isChrome : navigator.userAgent.indexOf('Chrome/') != -1,
     isFirefox : navigator.userAgent.indexOf('Firefox/') != -1,
@@ -1433,6 +1436,9 @@ Ten.Browser = {
     isAndroid : navigator.userAgent.indexOf('Android') != -1,
     isIPhone : (navigator.userAgent.indexOf('iPod;') != -1 || navigator.userAgent.indexOf('iPhone;') != -1 || navigator.userAgent.indexOf('iPhone Simulator;') != -1),
     isIPad : navigator.userAgent.indexOf('iPad') != -1,
+    isBB: navigator.userAgent.indexOf('BlackBerry') == 0,
+    isWM: navigator.userAgent.indexOf('IEMobile') != -1 || navigator.userAgent.indexOf('Windows Phone') != -1,
+    isOSX: navigator.userAgent.indexOf('OS X ') != -1,
     isSupportsXPath : !!document.evaluate,
     version: {
         string: (/(?:Firefox\/|MSIE |Opera\/|Chrome\/|Version\/)([\d.]+)/.exec(navigator.userAgent) || []).pop(),
@@ -1442,6 +1448,8 @@ Ten.Browser = {
 };
 Ten.Browser.isTouch = Ten.Browser.isIPhone || Ten.Browser.isAndroid || Ten.Browser.isDSi || Ten.Browser.is3DS;
 Ten.Browser.isSmartPhone = Ten.Browser.isIPhone || Ten.Browser.isAndroid;
+
+if (!Ten.Browser.isIE) Ten.JSONP.MaxBytes = 7000;
 
 Ten.Event.onKeyDown = ((Ten.Browser.isFirefox && Ten.Browser.isOSX) || Ten.Browser.isOpera) ? 'onkeypress' : 'onkeydown';
 

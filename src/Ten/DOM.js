@@ -119,3 +119,27 @@ Ten.DOM.getAncestorByClassName = function (className, node) {
   }
   return null;
 };
+
+Ten.DOM.someParentNode = function(el, func) {
+  if (el.parentNode) {
+    if (func(el.parentNode)) {
+      return true;
+    } else {
+      return Ten.DOM.someParentNode(el.parentNode, func);
+    }
+  } else {
+    return false;
+  }
+};
+
+Ten.DOM.clearSelection = function() {
+  if (window.getSelection) {
+    window.getSelection().collapse(document.body, 0);
+  } else if (document.getSelection) {
+    document.getSelection().collapse(document.body, 0);
+  } else {
+    var selection = document.selection.createRange();
+    selection.setEndPoint("EndToStart", selection);
+    selection.select();
+  }
+};

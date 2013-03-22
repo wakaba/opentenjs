@@ -52,6 +52,7 @@ scripts/ten-extras.js: \
   src/Ten/AsyncLoader/PageFragmentLoader/JSONData.js \
   src/Ten/AsyncLoader/PageFragmentLoader/HTTPData.js \
   src/Ten/AsyncLoader/Indicator.js \
+  src/Ten/IFrameMessenger.js \
   src/Ten/Style.js \
   src/NotificationArea.js \
   scripts/timeline.js \
