@@ -1507,6 +1507,7 @@ Ten.Browser = {
     isIE7 : navigator.userAgent.indexOf('MSIE 7.') != -1,
     isIE8 : navigator.userAgent.indexOf('MSIE 8.') != -1,
     isIE9 : navigator.userAgent.indexOf('MSIE 9.') != -1,
+    geIE10 : /MSIE [0-9]{2,}\./.test(navigator.userAgent),
     /* Gecko */
     isMozilla: navigator.userAgent.indexOf('Mozilla') != -1 && !/compatible|WebKit/.test(navigator.userAgent),
     /* Presto */
@@ -1517,8 +1518,11 @@ Ten.Browser = {
     isFirefox : navigator.userAgent.indexOf('Firefox/') != -1,
     isDSi : navigator.userAgent.indexOf('Nintendo DSi') != -1,
     is3DS : navigator.userAgent.indexOf('Nintendo 3DS') != -1,
-    isWii : navigator.userAgent.indexOf('Nintendo Wii') != -1,
-    isAndroid : navigator.userAgent.indexOf('Android') != -1,
+    isWii : navigator.userAgent.indexOf('Nintendo Wii') != -1 && !navigator.userAgent.indexOf('Nintendo WiiU'),
+    isWiiU: navigator.userAgent.indexOf('Nintendo WiiU'),
+    /* Android smartphones */
+    isAndroid : navigator.userAgent.indexOf('Android') != -1 && navigator.userAgent.indexOf('Mobile') != -1,
+    /* iPhone and iPod touch */
     isIPhone : (navigator.userAgent.indexOf('iPod;') != -1 || navigator.userAgent.indexOf('iPhone;') != -1 || navigator.userAgent.indexOf('iPhone Simulator;') != -1),
     isIPad : navigator.userAgent.indexOf('iPad') != -1,
     isBB: navigator.userAgent.indexOf('BlackBerry') == 0,
@@ -1532,6 +1536,7 @@ Ten.Browser = {
         toString: function() { return this.string }
     }
 };
+/* Touch small devices */
 Ten.Browser.isTouch = Ten.Browser.isIPhone || Ten.Browser.isAndroid || Ten.Browser.isDSi || Ten.Browser.is3DS;
 Ten.Browser.isSmartPhone = Ten.Browser.isIPhone || Ten.Browser.isAndroid;
 Ten.Browser.leIE7 = Ten.Browser.isIE6 || Ten.Browser.isIE7;
