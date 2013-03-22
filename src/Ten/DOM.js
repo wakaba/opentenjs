@@ -1,11 +1,3 @@
-Ten.DOM.firstElementChild = function (node) {
-  var el = node.firstElementChild || node.firstChild;
-  while (el && el.nodeType != 1) {
-    el = el.nextSibling;
-  }
-  return el;
-};
-
 /*
   structure = [
     {key: 'root', className: 'container', descendants: [
@@ -80,66 +72,4 @@ Ten.DOM.getElementsByStructure = function (root, structure) {
   }
 
   return result;
-};
-
-Ten.DOM.getElementSetByClassNames = function (map, container) {
-  var elements = {root: []};
-
-  if (map.root) {
-    if (map.root instanceof Array) {
-      elements.root = map.root;
-    } else {
-      if (Ten.DOM.hasClassName(container, map.root)) {
-        elements.root = [container];
-      } else {
-        elements.root = Ten.DOM.getElementsByClassName(map.root, container);
-      }
-    }
-    delete map.root;
-  }
-
-  var root = elements.root[0] || container || document.body || document.documentElement || document;
-  for (var n in map) {
-    if (map[n] instanceof Array) {
-      elements[n] = map[n];
-    } else if (map[n]) {
-      elements[n] = Ten.DOM.getElementsByClassName(map[n], root);
-    }
-  }
-
-  return elements;
-};
-
-Ten.DOM.getAncestorByClassName = function (className, node) {
-  while (node != null) {
-    node = node.parentNode;
-    if (Ten.DOM.hasClassName(node, className)) {
-      return node;
-    }
-  }
-  return null;
-};
-
-Ten.DOM.someParentNode = function(el, func) {
-  if (el.parentNode) {
-    if (func(el.parentNode)) {
-      return true;
-    } else {
-      return Ten.DOM.someParentNode(el.parentNode, func);
-    }
-  } else {
-    return false;
-  }
-};
-
-Ten.DOM.clearSelection = function() {
-  if (window.getSelection) {
-    window.getSelection().collapse(document.body, 0);
-  } else if (document.getSelection) {
-    document.getSelection().collapse(document.body, 0);
-  } else {
-    var selection = document.selection.createRange();
-    selection.setEndPoint("EndToStart", selection);
-    selection.select();
-  }
 };
