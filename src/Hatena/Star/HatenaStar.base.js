@@ -154,7 +154,7 @@ Hatena.Star.User = new Ten.Class({
         var hostname = location.hostname || '';
         if (this.name.match(/@(.*)/)) {
             if (RegExp.$1 == "DSi") {
-                return Hatena.Star.UgoMemoURL + this.name + '/';
+                return Hatena.Star.PortalURL + this.name + '/';
             } else if (RegExp.$1 == "facebook") {
                 return Hatena.Star.HaikuURL + this.name + '/';
             } else {
