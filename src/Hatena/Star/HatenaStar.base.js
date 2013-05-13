@@ -1250,6 +1250,7 @@ Hatena.Star.CommentButton = new Ten.Class({
         this.show();
         this.constructor = Hatena.Star.CommentButtonActive;
         this.img.src = Hatena.Star.Button.getImgSrc(this.constructor,this.container);
+        Ten.DOM.addClassName(this.container, 'hatena-star-comment-active');
     }
 });
 
