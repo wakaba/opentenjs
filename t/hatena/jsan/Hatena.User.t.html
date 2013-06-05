@@ -26,11 +26,11 @@ is (u.name, 'jkondo', 'name is jkondo');
 
 var img = u.profileIcon();
 ok (img, 'profileIcon');
-is (img.src, 'http://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
+is (img.src, 'https://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
 
 var img2 = Hatena.User.getProfileIcon('jkondo');
 ok (img2, 'getProfileIcon');
-is (img2.src, 'http://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
+is (img2.src, 'https://www.hatena.ne.jp/users/jk/jkondo/profile_s.gif', 'img.src');
 
 var u2 = new Hatena.User({name: 'cinnamon', rkm: 'abcde'});
 ok (u2, 'user from hash');
