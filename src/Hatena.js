@@ -22,7 +22,7 @@ Hatena.User = new Ten.Class({
         if (!name) name = 'user';
         var pre = name.match(/^[\w-]{2}/)[0];
         var img = document.createElement('img');
-        img.src = 'http://www.hatena.ne.jp/users/' + pre + '/' + name + '/profile_s.gif';
+        img.src = 'https://www.hatena.ne.jp/users/' + pre + '/' + name + '/profile_s.gif';
         img.setAttribute('alt', name);
         img.setAttribute('title', name);
         img.setAttribute('width','16px');
