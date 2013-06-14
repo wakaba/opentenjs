@@ -1,5 +1,6 @@
 Hatena.Star.BaseURL = 'http://s.hatena.ne.jp/';
 Hatena.Star.PortalURL = 'http://www.hatena.ne.jp/';
+Hatena.Star.ProfileURL = 'http://profile.hatena.ne.jp/';
 Hatena.Star.Text.loading = '\u8AAD\u307F\u8FBC\u307F\u4E2D\u2026';
 Hatena.Star.Text.close   = '\u9589\u3058\u308B';
 Hatena.Star.Text.colorstar_for_smartphone = "\u4ED8\u3051\u305F\u3044\u8272\u306E\u30B9\u30BF\u30FC\u3092\u30BF\u30C3\u30C1";

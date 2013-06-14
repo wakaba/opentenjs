@@ -2323,6 +2323,7 @@ if (!Hatena.Star.BaseURLProtocol) {
     Hatena.Star.BaseURLProtocol = ( location.protocol === "http:" ? "http:" : "https:" );
 }
 Hatena.Star.PortalURL = 'http://www.hatena.ne.jp/';
+Hatena.Star.ProfileURL = 'http://profile.hatena.ne.jp/';
 Hatena.Star.UgoMemoURL = 'http://ugomemo.hatena.ne.jp/';
 Hatena.Star.HaikuURL   = 'http://h.hatena.ne.jp/';
 Hatena.Star.HatenaHostRegexp = /(\.hatena\.ne\.jp|\.hatelabo.jp|\.hatena\.com)$/;
@@ -2457,18 +2458,12 @@ Hatena.Star.User = new Ten.Class({
     userPage: function() {
         var hostname = location.hostname || '';
         if (this.name.match(/@(.*)/)) {
-            if (RegExp.$1 == "DSi") {
-                return Hatena.Star.PortalURL + this.name + '/';
-            } else if (RegExp.$1 == "facebook") {
-                return Hatena.Star.HaikuURL + this.name + '/';
-            } else {
-                return Hatena.Star.BaseURL + this.name + '/';
-            }
+            return Hatena.Star.ProfileURL + this.name + '/';
         } else {
             if (Hatena.Star.HatenaHostRegexp.test(hostname)) {
                 return 'http://' + location.host + '/' + this.name + '/';
             } else {
-                return Hatena.Star.PortalURL + this.name + '/';
+                return Hatena.Star.ProfileURL + this.name + '/';
             }
         }
     }
@@ -4759,6 +4754,7 @@ it under the same terms as the Perl programming language.
 */
 Hatena.Star.BaseURL = 'http://s.hatena.ne.jp/';
 Hatena.Star.PortalURL = 'http://www.hatena.ne.jp/';
+Hatena.Star.ProfileURL = 'http://profile.hatena.ne.jp/';
 Hatena.Star.Text.loading = '\u8AAD\u307F\u8FBC\u307F\u4E2D\u2026';
 Hatena.Star.Text.close   = '\u9589\u3058\u308B';
 Hatena.Star.Text.colorstar_for_smartphone = "\u4ED8\u3051\u305F\u3044\u8272\u306E\u30B9\u30BF\u30FC\u3092\u30BF\u30C3\u30C1";

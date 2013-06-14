@@ -19,6 +19,7 @@ if (!Hatena.Star.BaseURLProtocol) {
     Hatena.Star.BaseURLProtocol = ( location.protocol === "http:" ? "http:" : "https:" );
 }
 Hatena.Star.PortalURL = 'http://www.hatena.ne.jp/';
+Hatena.Star.ProfileURL = 'http://profile.hatena.ne.jp/';
 Hatena.Star.UgoMemoURL = 'http://ugomemo.hatena.ne.jp/';
 Hatena.Star.HaikuURL   = 'http://h.hatena.ne.jp/';
 Hatena.Star.HatenaHostRegexp = /(\.hatena\.ne\.jp|\.hatelabo.jp|\.hatena\.com)$/;
@@ -153,18 +154,12 @@ Hatena.Star.User = new Ten.Class({
     userPage: function() {
         var hostname = location.hostname || '';
         if (this.name.match(/@(.*)/)) {
-            if (RegExp.$1 == "DSi") {
-                return Hatena.Star.PortalURL + this.name + '/';
-            } else if (RegExp.$1 == "facebook") {
-                return Hatena.Star.HaikuURL + this.name + '/';
-            } else {
-                return Hatena.Star.BaseURL + this.name + '/';
-            }
+            return Hatena.Star.ProfileURL + this.name + '/';
         } else {
             if (Hatena.Star.HatenaHostRegexp.test(hostname)) {
                 return 'http://' + location.host + '/' + this.name + '/';
             } else {
-                return Hatena.Star.PortalURL + this.name + '/';
+                return Hatena.Star.ProfileURL + this.name + '/';
             }
         }
     }
